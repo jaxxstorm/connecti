@@ -33,7 +33,8 @@ func Command() *cobra.Command {
 				return fmt.Errorf("creating progress bar: %v", err)
 			}
 
-			pulumiOutputHandler := tui.PulumiOutput{
+			pulumiOutputHandler := &tui.PulumiOutput{
+				Type:            "update",
 				CurrentProgress: 0,
 				ProgressBar:     progressBar,
 			}

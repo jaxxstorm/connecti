@@ -22,6 +22,7 @@ func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, er
 	if err != nil {
 		return s, fmt.Errorf("error installing AWS resource plugin: %v", err)
 	}
+
 	// FIXME: we also need to install the bastion plugin binary here
 	// See: https://github.com/pulumi/pulumi/issues/9782
 

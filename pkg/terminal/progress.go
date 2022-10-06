@@ -10,23 +10,46 @@ import (
 )
 
 type PulumiOutput struct {
+	Type            string
 	CurrentProgress int
 	ProgressBar     *ProgressBar
 }
 
-func (i PulumiOutput) Write(msg []byte) (int, error) {
+func (i *PulumiOutput) HandleUpdate(urn, status string) {
+	if i.CurrentProgress == 0 && urn == "pulumi:pulumi:Stack" {
+		i.CurrentProgress = 20
+		i.ProgressBar.SetProgress(20)
+	} else if urn == "pulumi:pulumi:Stack" && status == "created" {
+		i.CurrentProgress = 80
+		i.ProgressBar.SetProgress(80)
+	} else if status == "created" {
+		i.CurrentProgress = i.CurrentProgress + 5
+		i.ProgressBar.SetProgress(i.CurrentProgress)
+	}
+}
+
+func (i *PulumiOutput) HandleDestroy(urn, status string) {
+	if i.CurrentProgress == 0 {
+		i.CurrentProgress = 20
+		i.ProgressBar.SetProgress(20)
+	} else if status == "deleted" {
+		i.CurrentProgress = i.CurrentProgress + 5
+		i.ProgressBar.SetProgress(i.CurrentProgress)
+	}
+}
+
+func (i *PulumiOutput) Write(msg []byte) (int, error) {
 	msgParts := strings.Split(string(msg), " ")
 
 	if len(msgParts) == 7 {
 		urn := msgParts[3]
 		status := msgParts[5]
 
-		if i.CurrentProgress == 0 && urn == "pulumi:pulumi:Stack" {
-			i.CurrentProgress = 20
-			i.ProgressBar.SetProgress(20)
-		} else if urn == "pulumi:pulumi:Stack" && status == "created" {
-			i.CurrentProgress = 70
-			i.ProgressBar.SetProgress(70)
+		switch i.Type {
+		case "update":
+			i.HandleUpdate(urn, status)
+		case "destroy":
+			i.HandleDestroy(urn, status)
 		}
 
 		return len(msg), nil
