@@ -1,0 +1,25 @@
+before:
+  hooks:
+    - go mod download
+builds:
+- goos:
+    - darwin
+    - windows
+    - linux
+  goarch:
+    - amd64
+    - arm64
+  ldflags: -X github.com/jaxxstorm/connectme/pkg/version.Version={{.Version}}
+  binary: connectme
+  main: ./cmd/connectme/main.go
+archives:
+- name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+  format_overrides:
+    - goos: windows
+      format: zip
+snapshot:
+  name_template: "{{ .Tag }}-SNAPSHOT"
+changelog:
+  skip: true
+release:
+  prerelease: auto
