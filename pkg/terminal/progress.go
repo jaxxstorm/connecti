@@ -18,23 +18,26 @@ type PulumiOutput struct {
 func (i *PulumiOutput) HandleUpdate(urn, status string) {
 	if i.CurrentProgress == 0 && urn == "pulumi:pulumi:Stack" {
 		i.CurrentProgress = 20
-		i.ProgressBar.SetProgress(20)
+		msg := "Creating resources"
+		i.ProgressBar.SetProgress(20, &msg)
 	} else if urn == "pulumi:pulumi:Stack" && status == "created" {
 		i.CurrentProgress = 80
-		i.ProgressBar.SetProgress(80)
+		msg := "Resources created. Finishing up..."
+		i.ProgressBar.SetProgress(80, &msg)
 	} else if status == "created" {
 		i.CurrentProgress = i.CurrentProgress + 5
-		i.ProgressBar.SetProgress(i.CurrentProgress)
+		i.ProgressBar.SetProgress(i.CurrentProgress, nil)
 	}
 }
 
 func (i *PulumiOutput) HandleDestroy(urn, status string) {
 	if i.CurrentProgress == 0 {
 		i.CurrentProgress = 20
-		i.ProgressBar.SetProgress(20)
+		msg := "Destroying resources"
+		i.ProgressBar.SetProgress(20, &msg)
 	} else if status == "deleted" {
 		i.CurrentProgress = i.CurrentProgress + 5
-		i.ProgressBar.SetProgress(i.CurrentProgress)
+		i.ProgressBar.SetProgress(i.CurrentProgress, nil)
 	}
 }
 
@@ -68,13 +71,15 @@ type ProgressBar struct {
 }
 
 type ProgressBarMessage struct {
+	Msg   *string
 	Value int
 }
 
-func (p *ProgressBar) SetProgress(value int) {
+func (p *ProgressBar) SetProgress(value int, msg *string) {
 	p.Value = value
 	p.element.Send(ProgressBarMessage{
 		Value: value,
+		Msg:   msg,
 	})
 }
 
@@ -116,6 +121,7 @@ func NewProgressBar(args ProgressBarArgs) (*ProgressBar, error) {
 			maxWidth: args.MaxWidth,
 			progress: progress.New(progress.WithDefaultGradient()),
 			value:    0,
+			msg:      "Setting up Pulumi action",
 		}
 
 		p := tea.NewProgram(element)
@@ -148,6 +154,7 @@ type progressBarElement struct {
 	padding  int
 	maxWidth int
 	value    int
+	msg      string
 }
 
 func (p progressBarElement) Init() tea.Cmd {
@@ -157,9 +164,9 @@ func (p progressBarElement) Init() tea.Cmd {
 func (e progressBarElement) View() string {
 	pad := strings.Repeat(" ", e.padding)
 
-	return "\n" +
+	return "Performing action:\n\n" +
 		pad + e.progress.View() + "\n" +
-		pad + "Press any ctr+c to quit"
+		pad + e.msg + "\n"
 }
 
 func (m progressBarElement) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -177,12 +184,17 @@ func (m progressBarElement) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, nil
 
 	case ProgressBarMessage:
+		if msg.Msg != nil {
+			m.msg = *msg.Msg
+		}
+
 		m.value = msg.Value
 		pct := float64(m.value) / float64(100)
 		cmd := m.progress.SetPercent(pct)
 		return m, cmd
 
 	case progressBarFinished:
+		m.msg = "Finished"
 		cmd := m.progress.SetPercent(1)
 		return m, tea.Batch(closeProgressBarListener(msg), cmd)
 
