@@ -2,10 +2,12 @@ package aws
 
 import (
 	"context"
+	"fmt"
+
 	"github.com/jaxxstorm/connectme/pkg/aws"
+	tui "github.com/jaxxstorm/connectme/pkg/terminal"
 	"github.com/pulumi/pulumi/sdk/v3/go/auto/optdestroy"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var (
@@ -19,6 +21,17 @@ func Command() *cobra.Command {
 		Long:  `Tear down a tailscale bastion in an AWS VPC via an autoscaling group`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 
+			progressBar, err := tui.NewProgressBar(tui.ProgressBarArgs{})
+			if err != nil {
+				return fmt.Errorf("creating progress bar: %v", err)
+			}
+
+			pulumiOutputHandler := &tui.PulumiOutput{
+				Type:            "destroy",
+				CurrentProgress: 0,
+				ProgressBar:     progressBar,
+			}
+
 			ctx := context.Background()
 			program, err := aws.Program(name, ctx, aws.BastionArgs{
 				Name: name,
@@ -28,9 +41,11 @@ func Command() *cobra.Command {
 				return err
 			}
 
-			stdoutStreamer := optdestroy.ProgressStreams(os.Stdout)
+			stdoutStreamer := optdestroy.ProgressStreams(pulumiOutputHandler)
 			program.Destroy(ctx, stdoutStreamer)
 			program.Workspace().RemoveStack(ctx, name)
+			progressBar.Done()
+
 			return nil
 		},
 	}

@@ -1,16 +1,16 @@
 package aws
 
 import (
+	"context"
 	"fmt"
 	"net"
-	"os"
 
 	"github.com/jaxxstorm/connectme/pkg/aws"
 	randomname "github.com/jaxxstorm/connectme/pkg/name"
+	tui "github.com/jaxxstorm/connectme/pkg/terminal"
 	"github.com/pulumi/pulumi/sdk/v3/go/auto/optup"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"golang.org/x/net/context"
 )
 
 var (
@@ -28,6 +28,17 @@ func Command() *cobra.Command {
 		Long:  `Create a tailscale bastion in an AWS VPC via an autoscaling group`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 
+			progressBar, err := tui.NewProgressBar(tui.ProgressBarArgs{})
+			if err != nil {
+				return fmt.Errorf("creating progress bar: %v", err)
+			}
+
+			pulumiOutputHandler := &tui.PulumiOutput{
+				Type:            "update",
+				CurrentProgress: 0,
+				ProgressBar:     progressBar,
+			}
+
 			// Grab all the configuration variables
 			vpcId = viper.GetString("vpcId")
 			region = viper.GetString("region")
@@ -37,7 +48,7 @@ func Command() *cobra.Command {
 			name = viper.GetString("name")
 
 			// validate the IP
-			_, _, err := net.ParseCIDR(subnetRoute)
+			_, _, err = net.ParseCIDR(subnetRoute)
 			if err != nil {
 				return fmt.Errorf("invalid cidr: %v", err)
 			}
@@ -45,7 +56,6 @@ func Command() *cobra.Command {
 			if name == "" {
 				name = randomname.Generate()
 			}
-				
 
 			ctx := context.Background()
 			program, err := aws.Program(name, ctx, aws.BastionArgs{
@@ -59,8 +69,11 @@ func Command() *cobra.Command {
 				return err
 			}
 
-			stdoutStreamer := optup.ProgressStreams(os.Stdout)
+			stdoutStreamer := optup.ProgressStreams(pulumiOutputHandler)
 			program.Up(ctx, stdoutStreamer)
+
+			progressBar.Done()
+
 			return nil
 
 		},
