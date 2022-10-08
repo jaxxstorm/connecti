@@ -21,6 +21,9 @@ func Command() *cobra.Command {
 		Long:  `Tear down a tailscale bastion in an AWS VPC via an autoscaling group`,
 		RunE: tui.WrapCobraCommand(func(cmd *cobra.Command, args []string, view tui.View) error {
 			ctx := context.Background()
+			// FIXME: do we need to specify credentials here?
+			// I suspect not because I believe they're hardcoded into the provider
+			// but we should check
 			program, err := aws.Program(name, ctx, aws.BastionArgs{
 				Name: name,
 			})

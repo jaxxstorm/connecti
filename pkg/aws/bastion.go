@@ -17,10 +17,10 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 		}
 
 		_, err := awstailscale.NewBastion(ctx, args.Name, &awstailscale.BastionArgs{
-			VpcId: pulumi.String(args.VpcId),
+			VpcId:     pulumi.String(args.VpcId),
 			SubnetIds: subnets,
-			Route: pulumi.String(args.Route),
-			Region: pulumi.String(args.Region),
+			Route:     pulumi.String(args.Route),
+			Region:    pulumi.String(args.Region),
 		})
 
 		if err != nil {
