@@ -14,8 +14,9 @@ type CobraCommandHandler func(cmd *cobra.Command, args []string) error
 type CLICommandHandler func(cmd *cobra.Command, args []string, view View) error
 
 type progressBarUpdate struct {
-	Value int
-	Msg   string
+	Value    int
+	Msg      string
+	LiveLink string
 }
 
 type cancelPulumiExec func() error
@@ -38,6 +39,7 @@ type View struct {
 	progress                 progress.Model
 	stopwatch                stopwatch.Model
 	msg                      string
+	liveLink                 string
 	command                  CLICommand
 	error                    bool
 	done                     bool
@@ -60,10 +62,11 @@ func (v View) NewPulumiOutputHandler(typ string) *PulumiOutput {
 	}
 }
 
-func (v View) SendPulumiProgressOutput(progress int, msg string) {
+func (v View) SendPulumiProgressOutput(progress int, msg, liveLink string) {
 	v.pulumiProgressOutput <- progressBarUpdate{
-		Value: progress,
-		Msg:   msg,
+		Value:    progress,
+		Msg:      msg,
+		LiveLink: liveLink,
 	}
 }
 
@@ -128,6 +131,10 @@ func (v View) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			v.msg = msg.Msg
 		}
 
+		if msg.LiveLink != "" {
+			v.liveLink = msg.LiveLink
+		}
+
 		pct := float64(msg.Value) / float64(100)
 		cmd := v.progress.SetPercent(pct)
 		return v, tea.Batch(cmd, v.ListenForPulumiProgressOutput)
@@ -155,20 +162,28 @@ func (v View) View() string {
 			pad + v.progress.View() + "\n" +
 			pad + "Time elapsed: " + v.stopwatch.View() + "\n\n" +
 			pad + "Error:\n" +
-			pad + pad + v.msg + "\n"
+			pad + pad + v.msg + v.renderLiveLink(pad)
 	}
 
 	if v.done {
 		return "Performed action:\n\n" +
 			pad + v.progress.View() + "\n" +
 			pad + "Time elapsed: " + v.stopwatch.View() + "\n" +
-			pad + v.msg + "\n"
+			pad + v.msg + v.renderLiveLink(pad)
 	}
 
 	return "Performing action:\n\n" +
 		pad + v.progress.View() + "\n" +
 		pad + "Time elapsed: " + v.stopwatch.View() + "\n" +
-		pad + v.msg + "\n"
+		pad + v.msg + v.renderLiveLink(pad)
+}
+
+func (v View) renderLiveLink(pad string) string {
+	if v.liveLink == "" {
+		return "\n"
+	}
+
+	return "\n" + pad + "View in the Pulumi Service: " + v.liveLink
 }
 
 func (v View) Close() tea.Cmd {
