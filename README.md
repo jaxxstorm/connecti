@@ -38,7 +38,7 @@ Provisioning your infrastructure will depend on the cloud provider you're using.
 
 | Cloud Provider| Usage Documentation|
 | ------------- |:-------------:|
-| AWS           | Docs](../docs/usage/AWS.md) |
+| AWS           | [Docs](../docs/usage/AWS.md) |
 
 ## Configuration
 
