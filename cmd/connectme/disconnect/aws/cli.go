@@ -19,35 +19,33 @@ func Command() *cobra.Command {
 		Use:   "aws",
 		Short: "Disconnect from AWS infrastructure",
 		Long:  `Tear down a tailscale bastion in an AWS VPC via an autoscaling group`,
-		RunE: func(cmd *cobra.Command, args []string) error {
-
-			progressBar, err := tui.NewProgressBar(tui.ProgressBarArgs{})
-			if err != nil {
-				return fmt.Errorf("creating progress bar: %v", err)
-			}
-
-			pulumiOutputHandler := &tui.PulumiOutput{
-				Type:            "destroy",
-				CurrentProgress: 0,
-				ProgressBar:     progressBar,
-			}
-
+		RunE: tui.WrapCobraCommand(func(cmd *cobra.Command, args []string, view tui.View) error {
 			ctx := context.Background()
 			program, err := aws.Program(name, ctx, aws.BastionArgs{
 				Name: name,
 			})
-
 			if err != nil {
 				return err
 			}
 
+			view.SetPulumiProgramCancelFn(func() error {
+				return program.Cancel(ctx)
+			})
+
+			pulumiOutputHandler := view.NewPulumiOutputHandler("destroy")
 			stdoutStreamer := optdestroy.ProgressStreams(pulumiOutputHandler)
-			program.Destroy(ctx, stdoutStreamer)
-			program.Workspace().RemoveStack(ctx, name)
-			progressBar.Done()
+			_, err = program.Destroy(ctx, stdoutStreamer)
+			if err != nil {
+				return fmt.Errorf("failed destroy: %v", err)
+			}
+
+			err = program.Workspace().RemoveStack(ctx, name)
+			if err != nil {
+				return fmt.Errorf("failed to remove stack: %v", err)
+			}
 
 			return nil
-		},
+		}),
 	}
 
 	command.Flags().StringVar(&name, "name", "", "The name of the bastion to tear down")
