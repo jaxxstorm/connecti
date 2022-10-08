@@ -26,19 +26,7 @@ func Command() *cobra.Command {
 		Use:   "aws",
 		Short: "Connect to AWS infrastructure",
 		Long:  `Create a tailscale bastion in an AWS VPC via an autoscaling group`,
-		RunE: func(cmd *cobra.Command, args []string) error {
-
-			progressBar, err := tui.NewProgressBar(tui.ProgressBarArgs{})
-			if err != nil {
-				return fmt.Errorf("creating progress bar: %v", err)
-			}
-
-			pulumiOutputHandler := &tui.PulumiOutput{
-				Type:            "update",
-				CurrentProgress: 0,
-				ProgressBar:     progressBar,
-			}
-
+		RunE: tui.WrapCobraCommand(func(cmd *cobra.Command, args []string, view tui.View) error {
 			// Grab all the configuration variables
 			vpcId = viper.GetString("vpcId")
 			region = viper.GetString("region")
@@ -48,7 +36,7 @@ func Command() *cobra.Command {
 			name = viper.GetString("name")
 
 			// validate the IP
-			_, _, err = net.ParseCIDR(subnetRoute)
+			_, _, err := net.ParseCIDR(subnetRoute)
 			if err != nil {
 				return fmt.Errorf("invalid cidr: %v", err)
 			}
@@ -69,14 +57,20 @@ func Command() *cobra.Command {
 				return err
 			}
 
-			stdoutStreamer := optup.ProgressStreams(pulumiOutputHandler)
-			program.Up(ctx, stdoutStreamer)
+			view.SetPulumiProgramCancelFn(func() error {
+				return program.Cancel(ctx)
+			})
 
-			progressBar.Done()
+			outputHandler := view.NewPulumiOutputHandler("update")
+			stdoutStreamer := optup.ProgressStreams(outputHandler)
+			_, err = program.Up(ctx, stdoutStreamer)
+			if err != nil {
+				return fmt.Errorf("failed update: %v", err)
+			}
 
 			return nil
 
-		},
+		}),
 	}
 
 	command.Flags().StringVar(&vpcId, "vpc-id", "", "The AWS Vpc Id to use")
