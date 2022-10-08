@@ -6,4 +6,6 @@ type BastionArgs struct {
 	SubnetIds []string
 	Route     string
 	Region    string
+	Tailnet   string
+	ApiKey    string
 }
