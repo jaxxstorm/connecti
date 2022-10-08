@@ -46,11 +46,28 @@ func Command() *cobra.Command {
 			}
 
 			writer := tabwriter.NewWriter(os.Stdout, tabwriterMinWidth, tabwriterWidth, tabwriterPadding, tabwriterPadChar, tabwriterFlags)
-			fmt.Fprintln(writer, "NAME\tLAST UPDATE\t# RESOURCES\tURL")
+			fmt.Fprintln(writer, "NAME\tLAST UPDATE\t# RESOURCES\tTYPE\tURL")
 
 			for _, stack := range stacks {
 				var url string
 				var resourceCount int
+				var connectMeType string
+
+				// FIXME: this is going to be very slow for lots of stacks.
+				// I don't love it..
+				_, err := ws.RefreshConfig(ctx, stack.Name)
+				if err != nil {
+					return fmt.Errorf("error refreshing config for stack %s: %v", stack.Name, err)
+				}
+
+				cfg, err := ws.GetConfig(ctx, stack.Name, "connectme:type")
+
+				if err != nil {
+					return fmt.Errorf("error retrieving config value for stack %s: %v", stack.Name, err)
+				}
+
+				connectMeType = cfg.Value
+
 				if stack.URL == "" {
 					url = "Not available"
 				} else {
@@ -63,7 +80,7 @@ func Command() *cobra.Command {
 					resourceCount = *stack.ResourceCount
 				}
 
-				fmt.Fprintf(writer, "%s\t%s\t%d\t%s\n", stack.Name, stack.LastUpdate, resourceCount, url)
+				fmt.Fprintf(writer, "%s\t%s\t%d\t%s\t%s\n", stack.Name, stack.LastUpdate, resourceCount, connectMeType, url)
 			}
 
 			writer.Flush()
