@@ -76,6 +76,7 @@ func Command() *cobra.Command {
 			stdoutStreamer := optup.ProgressStreams(outputHandler)
 			_, err = program.Up(ctx, stdoutStreamer)
 			if err != nil {
+				view.SendPulumiProgressOutput(outputHandler.CurrentProgress, "Failed to create resources. Cleaning up.", "")
 				// If the update errors, we should clean up the stack for the user.
 				_, dErr := program.Destroy(ctx)
 				if dErr != nil {
