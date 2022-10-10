@@ -56,6 +56,8 @@ func Command() *cobra.Command {
 				name = randomname.Generate()
 			}
 
+			view.Ready()
+
 			ctx := context.Background()
 			program, err := aws.Program(name, ctx, aws.BastionArgs{
 				Name:      name,

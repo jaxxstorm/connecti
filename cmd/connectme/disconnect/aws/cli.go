@@ -20,6 +20,8 @@ func Command() *cobra.Command {
 		Short: "Disconnect from AWS infrastructure",
 		Long:  `Tear down a tailscale bastion in an AWS VPC via an autoscaling group`,
 		RunE: tui.WrapCobraCommand(func(cmd *cobra.Command, args []string, view tui.View) error {
+
+			view.Ready()
 			ctx := context.Background()
 			// FIXME: do we need to specify credentials here?
 			// I suspect not because I believe they're hardcoded into the provider
