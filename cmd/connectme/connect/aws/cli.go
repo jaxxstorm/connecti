@@ -89,6 +89,16 @@ func Command() *cobra.Command {
 			stdoutStreamer := optup.ProgressStreams(outputHandler)
 			_, err = program.Up(ctx, stdoutStreamer)
 			if err != nil {
+				// If the update errors, we should clean up the stack for the user.
+				_, dErr := program.Destroy(ctx)
+				if dErr != nil {
+					return fmt.Errorf("failed update: %v\n\n\tfailed clean up: %v", err, dErr)
+				}
+				rmErr := program.Workspace().RemoveStack(ctx, name)
+				if rmErr != nil {
+					return fmt.Errorf("failed update: %v\n\n\tfailed stack removal: %v", err, rmErr)
+				}
+
 				return fmt.Errorf("failed update: %v", err)
 			}
 
