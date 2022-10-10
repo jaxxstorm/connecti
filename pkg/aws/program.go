@@ -28,6 +28,7 @@ func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, er
 	// See: https://github.com/pulumi/pulumi/issues/9782
 	// See: https://github.com/jaxxstorm/connectme/issues/6
 
+	s.SetConfig(ctx, "connectme:type", auto.ConfigValue{Value: "aws"})
 	s.SetConfig(ctx, "aws:region", auto.ConfigValue{Value: args.Region})
 	s.SetConfig(ctx, "tailscale:tailnet", auto.ConfigValue{Value: args.Tailnet})
 	s.SetConfig(ctx, "tailscale:apiKey", auto.ConfigValue{Value: args.ApiKey, Secret: true})

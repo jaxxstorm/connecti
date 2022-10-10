@@ -5,6 +5,7 @@ import (
 	"github.com/jaxxstorm/connectme/cmd/connectme/connect"
 	"github.com/jaxxstorm/connectme/cmd/connectme/disconnect"
 	"github.com/jaxxstorm/connectme/cmd/connectme/version"
+	"github.com/jaxxstorm/connectme/cmd/connectme/list"
 	"github.com/jaxxstorm/connectme/pkg/contract"
 	"os"
 
@@ -49,6 +50,7 @@ func configureCLI() *cobra.Command {
 	rootCommand.AddCommand(connect.Command())
 	rootCommand.AddCommand(disconnect.Command())
 	rootCommand.AddCommand(version.Command())
+	rootCommand.AddCommand(list.Command())
 
 	rootCommand.PersistentFlags().BoolVarP(&debug, "debug", "D", false, "enable debug logging")
 	rootCommand.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.connectme.yaml)")
