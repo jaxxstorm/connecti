@@ -20,6 +20,7 @@ type progressBarUpdate struct {
 }
 
 type cancelPulumiExec func() error
+type viewReady bool
 type viewError error
 type viewComplete int
 type viewExit int
@@ -43,6 +44,18 @@ type View struct {
 	command                  CLICommand
 	error                    bool
 	done                     bool
+	ready                    bool
+	readyListener            chan bool
+}
+
+func (v View) Ready() {
+	v.readyListener <- true
+}
+
+func (v View) ListenForReady() tea.Msg {
+	<-v.readyListener
+	close(v.readyListener)
+	return viewReady(true)
 }
 
 func (v View) handleCommand() tea.Msg {
@@ -89,11 +102,15 @@ func (v View) Init() tea.Cmd {
 	return tea.Batch(
 		v.progress.SetPercent(0), v.handleCommand, v.stopwatch.Init(),
 		v.ListenForPulumiProgressOutput, v.ListForPulumiProgramCancelFn,
+		v.ListenForReady,
 	)
 }
 
 func (v View) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case viewReady:
+		v.ready = true
+		return v, nil
 	case cancelPulumiExec:
 		v.cancelPulumiExec = msg
 		return v, nil
@@ -157,6 +174,10 @@ func (v View) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (v View) View() string {
 	pad := strings.Repeat(" ", 2)
 
+	if !v.ready {
+		return ""
+	}
+
 	if v.error {
 		return "Attempted action:\n\n" +
 			pad + v.progress.View() + "\n" +
@@ -195,6 +216,7 @@ func (v View) Close() tea.Cmd {
 func WrapCobraCommand(block CLICommandHandler) CobraCommandHandler {
 	return func(cmd *cobra.Command, args []string) error {
 		view := View{
+			readyListener:            make(chan bool),
 			cancelPulumiExecListener: make(chan cancelPulumiExec),
 			pulumiProgressOutput:     make(chan progressBarUpdate),
 			stopwatch:                stopwatch.New(),

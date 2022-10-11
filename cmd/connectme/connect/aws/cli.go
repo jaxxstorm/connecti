@@ -3,7 +3,6 @@ package aws
 import (
 	"context"
 	"fmt"
-	"net"
 
 	"github.com/jaxxstorm/connectme/pkg/aws"
 	randomname "github.com/jaxxstorm/connectme/pkg/name"
@@ -14,13 +13,11 @@ import (
 )
 
 var (
-	vpcId       string
-	region      string
-	subnetIds   []string
-	subnetRoute string
-	name        string
-	tailnet     string
-	apiKey      string
+	region    string
+	subnetIds []string
+	name      string
+	tailnet   string
+	apiKey    string
 )
 
 func Command() *cobra.Command {
@@ -30,10 +27,8 @@ func Command() *cobra.Command {
 		Long:  `Create a tailscale bastion in an AWS VPC via an autoscaling group`,
 		RunE: tui.WrapCobraCommand(func(cmd *cobra.Command, args []string, view tui.View) error {
 			// Grab all the configuration variables
-			vpcId = viper.GetString("vpcId")
 			region = viper.GetString("region")
 			subnetIds = viper.GetStringSlice("subnetIds")
-			subnetRoute = viper.GetString("route")
 			tailnet = viper.GetString("tailnet")
 			apiKey = viper.GetString("apiKey")
 			name = viper.GetString("name")
@@ -53,12 +48,6 @@ func Command() *cobra.Command {
 				return fmt.Errorf("must specify an AWS region. See --help")
 			}
 
-			// validate the IP
-			_, _, err := net.ParseCIDR(subnetRoute)
-			if err != nil {
-				return fmt.Errorf("invalid cidr: %v", err)
-			}
-
 			if err := aws.ValidateCredentials(); err != nil {
 				return fmt.Errorf("error validating AWS credentials: %v", err)
 			}
@@ -67,13 +56,13 @@ func Command() *cobra.Command {
 				name = randomname.Generate()
 			}
 
+			view.Ready()
+
 			ctx := context.Background()
 			program, err := aws.Program(name, ctx, aws.BastionArgs{
 				Name:      name,
-				VpcId:     vpcId,
 				SubnetIds: subnetIds,
 				Region:    region,
-				Route:     subnetRoute,
 				Tailnet:   tailnet,
 				ApiKey:    apiKey,
 			})
@@ -89,6 +78,17 @@ func Command() *cobra.Command {
 			stdoutStreamer := optup.ProgressStreams(outputHandler)
 			_, err = program.Up(ctx, stdoutStreamer)
 			if err != nil {
+				view.SendPulumiProgressOutput(outputHandler.CurrentProgress, "Failed to create resources. Cleaning up.", "")
+				// If the update errors, we should clean up the stack for the user.
+				_, dErr := program.Destroy(ctx)
+				if dErr != nil {
+					return fmt.Errorf("failed update: %v\n\n\tfailed clean up: %v", err, dErr)
+				}
+				rmErr := program.Workspace().RemoveStack(ctx, name)
+				if rmErr != nil {
+					return fmt.Errorf("failed update: %v\n\n\tfailed stack removal: %v", err, rmErr)
+				}
+
 				return fmt.Errorf("failed update: %v", err)
 			}
 
@@ -97,16 +97,12 @@ func Command() *cobra.Command {
 		}),
 	}
 
-	command.Flags().StringVar(&vpcId, "vpc-id", "", "The AWS Vpc Id to use.")
 	command.Flags().StringVar(&region, "region", "", "The AWS Region to use.")
 	command.Flags().StringVar(&name, "name", "", "Unique name to use for your bastion.")
-	command.Flags().StringVar(&subnetRoute, "route", "", "The subnet route to connect to. It should match your VPC Cidr.")
 	command.Flags().StringVar(&tailnet, "tailnet", "", "The name of the tailnet to connect to. See: https://login.tailscale.com/admin/settings/general")
 	command.Flags().StringVar(&apiKey, "api-key", "", "The tailnet api key to use. See: https://login.tailscale.com/admin/settings/keys")
 	command.Flags().StringSliceVar(&subnetIds, "subnet-ids", nil, "The subnet Ids to use in the Vpc.")
 
-	viper.BindPFlag("vpcId", command.Flags().Lookup("vpc-id"))
-	viper.BindPFlag("route", command.Flags().Lookup("route"))
 	viper.BindPFlag("region", command.Flags().Lookup("region"))
 	viper.BindPFlag("subnetIds", command.Flags().Lookup("subnet-ids"))
 	viper.BindPFlag("name", command.Flags().Lookup("name"))
@@ -118,9 +114,7 @@ func Command() *cobra.Command {
 	viper.BindEnv("tailnet", "TAILSCALE_TAILNET")
 	viper.BindEnv("apiKey", "TAILSCALE_API_KEY")
 
-	command.MarkFlagRequired("vpc-id")
 	command.MarkFlagRequired("subnet-ids")
-	command.MarkFlagRequired("route")
 
 	return command
 }

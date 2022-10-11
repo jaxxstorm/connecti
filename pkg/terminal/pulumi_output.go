@@ -32,7 +32,7 @@ func (i *PulumiOutput) HandleDestroy(urn, status string) {
 		i.CurrentProgress = 20
 		msg := "Destroying resources... "
 		i.Handler(20, msg, "")
-	} else if status == "deleted" {
+	} else if status == "deleted" && i.CurrentProgress < 80 {
 		i.CurrentProgress = i.CurrentProgress + 5
 		i.Handler(i.CurrentProgress, "", "")
 	}
