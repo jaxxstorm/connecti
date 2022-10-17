@@ -33,6 +33,8 @@ func Command() *cobra.Command {
 			apiKey = viper.GetString("apiKey")
 			name = viper.GetString("name")
 
+			view.Ready()
+
 			// apparently you can't specify if a flag is required
 			// and set in configuration, so manual validation is the only way
 			// see: https://github.com/spf13/viper/issues/397
@@ -55,8 +57,6 @@ func Command() *cobra.Command {
 			if name == "" {
 				name = randomname.Generate()
 			}
-
-			view.Ready()
 
 			ctx := context.Background()
 			program, err := aws.Program(name, ctx, aws.BastionArgs{
