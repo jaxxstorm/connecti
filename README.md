@@ -20,11 +20,7 @@ Coming soon
 
 ### Prerequisites
 
-Before using `connectme` - you'll need to make sure you have valid cloud provider credentials for the account you wish to use. The mechanism you'll use to provision credentials will be different depending on your cloud provider and authentication mechanism, but you can verify you have valid credentials for AWS by running:
-
-```
-aws sts get-caller-identity
-```
+Before using `connectme` - you'll need to make sure you have valid cloud provider credentials for the account you wish to use. The mechanism you'll use to provision credentials will be different depending on your cloud provider and authentication mechanism. See the provider-specific documentation below.
 
 You'll need then to sign up to [Tailscale](https://tailscale.com/kb/1017/install/) and create a "Tailnet". Information on how to do this will depend on your operating system. Tailscale offers a generous free tier for individuals.
 
@@ -38,18 +34,26 @@ Provisioning your infrastructure will depend on the cloud provider you're using.
 
 | Cloud Provider| Usage Documentation|
 | ------------- |:-------------:|
-| AWS           | [Docs](../docs/usage/AWS.md) |
+| AWS           | [Docs](../docs/aws/README.md) |
 
 ## Configuration
 
-`connectme` has a configuration file which you can specify when you run the program using the `--config` flag, or you can store it in the default location `${HOME}/.connectme.yaml`.
+`connectme` has a configuration file that you can specify when you run the program using the `-`-config` flag or you can store it in the default location `${HOME}/.connectme.yaml`.
 
-The configuration file allows you to store common configuration so you don't have to specify them as command line flags:
+The configuration file allows you to store common configurations so you don't have to specify them as command line flags:
 
 ```yaml
 tailnet: "my-tailnet"
-region: "us-west-2"
+aws:region: "us-west-2"
 ```
+
+You can also specify configuration values as environment variables. The full list of configuration values and environment variables is as follows:
+
+| Environment Variables| Configuration| Example
+| ------------- |:-------------:|
+| TAILSCALE_API_KEY | apiKey     | tskey-<random> |
+| TAILSCALE_TAILNET | tailnet    | my-cool-tailnet |
+| AWS_REGION        | aws:region | us-west-2 |
 
 ## Caveats
 
