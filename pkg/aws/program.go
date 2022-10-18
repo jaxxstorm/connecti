@@ -24,9 +24,10 @@ func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, er
 		return s, fmt.Errorf("error installing AWS resource plugin: %v", err)
 	}
 
-	// FIXME: we also need to install the bastion plugin binary here
-	// See: https://github.com/pulumi/pulumi/issues/9782
-	// See: https://github.com/jaxxstorm/connectme/issues/6
+	err = w.InstallPluginFromServer(ctx, "aws-tailscale", "v0.0.7", "github://api.github.com/lbrlabs")
+	if err != nil {
+		return s, fmt.Errorf("error installing AWS tailscale plugin: %v", err)
+	}
 
 	s.SetConfig(ctx, "connectme:type", auto.ConfigValue{Value: "aws"})
 	s.SetConfig(ctx, "aws:region", auto.ConfigValue{Value: args.Region})
