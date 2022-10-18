@@ -23,3 +23,28 @@ changelog:
   skip: true
 release:
   prerelease: auto
+brews:
+  - 
+    name: connectme
+    tap:
+      owner: jaxxstorm
+      name: homebrew-tap
+    commit_author:
+      name: GitHub Actions
+      email: bot@leebriggs.co.uk
+    folder: Formula
+    homepage: "https://leebriggs.co.uk"
+    description: "Quickly connect to your cloud infrastructure"
+scoop:
+  url_template: "http://github.com/jaxxstorm/connectme/releases/{{ .Tag }}/{{ .ArtifactName }}"
+  bucket:
+    owner: jaxxstorm
+    name: scoop-bucket
+    branch: main
+  commit_author:
+    name: bot
+    email: bot@leebriggs.co.uk
+  commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
+  homepage: "https://leebriggs.co.uk/"
+  description: "Quickly connect to your cloud infrastructure."
+
