@@ -62,7 +62,7 @@ Provisioning your infrastructure will depend on the cloud provider you're using.
 
 ## Configuration
 
-`connectme` has a configuration file that you can specify when you run the program using the `-`-config` flag or you can store it in the default location `${HOME}/.connectme.yaml`.
+`connectme` has a configuration file that you can specify when you run the program using the `--config` flag or you can store it in the default location `${HOME}/.connectme.yaml`.
 
 The configuration file allows you to store common configurations so you don't have to specify them as command line flags:
 
