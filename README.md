@@ -74,7 +74,7 @@ aws:region: "us-west-2"
 You can also specify configuration values as environment variables. The full list of configuration values and environment variables is as follows:
 
 | Environment Variables| Configuration| Example
-| ------------- |:-------------:|
+| ------------- |-------------| :-----------:|
 | TAILSCALE_API_KEY | apiKey     | tskey-<random> |
 | TAILSCALE_TAILNET | tailnet    | my-cool-tailnet |
 | AWS_REGION        | aws:region | us-west-2 |
