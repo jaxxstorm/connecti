@@ -11,7 +11,7 @@ require (
 	github.com/lbrlabs/pulumi-aws-tailscalebastion/sdk v0.0.2
 	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de
 	github.com/pulumi/pulumi-aws/sdk/v5 v5.16.2
-	github.com/pulumi/pulumi/sdk/v3 v3.40.2
+	github.com/pulumi/pulumi/sdk/v3 v3.42.1-0.20221017235917-bbe62900becd
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.13.0
 )

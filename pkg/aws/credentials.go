@@ -9,6 +9,7 @@ import (
 )
 
 func ValidateCredentials() error {
+
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		return fmt.Errorf("failed to load configuration, %v", err)

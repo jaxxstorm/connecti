@@ -39,6 +39,10 @@ func Command() *cobra.Command {
 
 			pulumiOutputHandler := view.NewPulumiOutputHandler("destroy")
 			stdoutStreamer := optdestroy.ProgressStreams(pulumiOutputHandler)
+			_, err = program.Refresh(ctx)
+			if err != nil {
+				return fmt.Errorf("error refreshing stack: %v", err)
+			}
 			_, err = program.Destroy(ctx, stdoutStreamer)
 			if err != nil {
 				return fmt.Errorf("failed destroy: %v", err)

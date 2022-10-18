@@ -55,9 +55,14 @@ func Command() *cobra.Command {
 
 				// FIXME: this is going to be very slow for lots of stacks.
 				// I don't love it..
-				_, err := ws.RefreshConfig(ctx, stack.Name)
-				if err != nil {
-					return fmt.Errorf("error refreshing config for stack %s: %v", stack.Name, err)
+				if stack.ResourceCount == nil {
+					resourceCount = 0
+				} else {
+					resourceCount = *stack.ResourceCount
+					_, err := ws.RefreshConfig(ctx, stack.Name)
+					if err != nil {
+						return fmt.Errorf("error refreshing config for stack %s: %v", stack.Name, err)
+					}
 				}
 
 				cfg, err := ws.GetConfig(ctx, stack.Name, "connectme:type")
@@ -73,13 +78,6 @@ func Command() *cobra.Command {
 				} else {
 					url = stack.URL
 				}
-
-				if stack.ResourceCount == nil {
-					resourceCount = 0
-				} else {
-					resourceCount = *stack.ResourceCount
-				}
-
 				fmt.Fprintf(writer, "%s\t%s\t%d\t%s\t%s\n", stack.Name, stack.LastUpdate, resourceCount, connectMeType, url)
 			}
 

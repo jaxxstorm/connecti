@@ -76,6 +76,10 @@ func Command() *cobra.Command {
 
 			outputHandler := view.NewPulumiOutputHandler("update")
 			stdoutStreamer := optup.ProgressStreams(outputHandler)
+			_, err = program.Refresh(ctx)
+			if err != nil {
+				return fmt.Errorf("error refreshing stack: %v", err)
+			}
 			_, err = program.Up(ctx, stdoutStreamer)
 			if err != nil {
 				view.SendPulumiProgressOutput(outputHandler.CurrentProgress, "Failed to create resources. Cleaning up.", "")
