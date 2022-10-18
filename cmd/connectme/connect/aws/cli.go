@@ -27,7 +27,7 @@ func Command() *cobra.Command {
 		Long:  `Create a tailscale bastion in an AWS VPC via an autoscaling group`,
 		RunE: tui.WrapCobraCommand(func(cmd *cobra.Command, args []string, view tui.View) error {
 			// Grab all the configuration variables
-			region = viper.GetString("region")
+			region = viper.GetString("aws:region")
 			subnetIds = viper.GetStringSlice("subnetIds")
 			tailnet = viper.GetString("tailnet")
 			apiKey = viper.GetString("apiKey")
@@ -103,14 +103,14 @@ func Command() *cobra.Command {
 	command.Flags().StringVar(&apiKey, "api-key", "", "The tailnet api key to use. See: https://login.tailscale.com/admin/settings/keys")
 	command.Flags().StringSliceVar(&subnetIds, "subnet-ids", nil, "The subnet Ids to use in the Vpc.")
 
-	viper.BindPFlag("region", command.Flags().Lookup("region"))
+	viper.BindPFlag("aws:region", command.Flags().Lookup("region"))
 	viper.BindPFlag("subnetIds", command.Flags().Lookup("subnet-ids"))
 	viper.BindPFlag("name", command.Flags().Lookup("name"))
 	viper.BindPFlag("tailnet", command.Flags().Lookup("tailnet"))
 	viper.BindPFlag("apiKey", command.Flags().Lookup("api-key"))
 
 	// Bind the env vars to the provider env vars
-	viper.BindEnv("region", "AWS_REGION")
+	viper.BindEnv("aws:region", "AWS_REGION")
 	viper.BindEnv("tailnet", "TAILSCALE_TAILNET")
 	viper.BindEnv("apiKey", "TAILSCALE_API_KEY")
 

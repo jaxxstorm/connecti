@@ -20,11 +20,31 @@ Coming soon
 
 ### Prerequisites
 
-Before using `connectme` - you'll need to make sure you have valid cloud provider credentials for the account you wish to use. The mechanism you'll use to provision credentials will be different depending on your cloud provider and authentication mechanism, but you can verify you have valid credentials for AWS by running:
+#### Pulumi
+
+`connectme` uses Pulumi's automation API. You'll need to ensure you have the Pulumi CLI installed and be logged into a state backend.
+
+Installation docs for your operating system can be found [here](https://www.pulumi.com/docs/get-started/install/)
+
+Once you've installed the Pulumi CLI, you'll need to choose a valid backend. The easiest backend to use is the Pulumi Service backend. Just run the login command, and create an account:
 
 ```
-aws sts get-caller-identity
+pulumi login
 ```
+
+Individual accounts are free forever.
+
+If you don't wish to use the Pulumi service, there are other options. 
+
+The second easiest backend to use is the [Local Backend](https://www.pulumi.com/docs/intro/concepts/state/#logging-into-the-local-filesystem-backend)
+
+```
+pulumi login --local
+```
+
+#### Cloud Provider
+
+Before using `connectme` - you'll need to make sure you have valid cloud provider credentials for the account you wish to use. The mechanism you'll use to provision credentials will be different depending on your cloud provider and authentication mechanism. See the provider-specific documentation below.
 
 You'll need then to sign up to [Tailscale](https://tailscale.com/kb/1017/install/) and create a "Tailnet". Information on how to do this will depend on your operating system. Tailscale offers a generous free tier for individuals.
 
@@ -38,18 +58,26 @@ Provisioning your infrastructure will depend on the cloud provider you're using.
 
 | Cloud Provider| Usage Documentation|
 | ------------- |:-------------:|
-| AWS           | [Docs](../docs/usage/AWS.md) |
+| AWS           | [Docs](../docs/aws/README.md) |
 
 ## Configuration
 
-`connectme` has a configuration file which you can specify when you run the program using the `--config` flag, or you can store it in the default location `${HOME}/.connectme.yaml`.
+`connectme` has a configuration file that you can specify when you run the program using the `-`-config` flag or you can store it in the default location `${HOME}/.connectme.yaml`.
 
-The configuration file allows you to store common configuration so you don't have to specify them as command line flags:
+The configuration file allows you to store common configurations so you don't have to specify them as command line flags:
 
 ```yaml
 tailnet: "my-tailnet"
-region: "us-west-2"
+aws:region: "us-west-2"
 ```
+
+You can also specify configuration values as environment variables. The full list of configuration values and environment variables is as follows:
+
+| Environment Variables| Configuration| Example
+| ------------- |:-------------:|
+| TAILSCALE_API_KEY | apiKey     | tskey-<random> |
+| TAILSCALE_TAILNET | tailnet    | my-cool-tailnet |
+| AWS_REGION        | aws:region | us-west-2 |
 
 ## Caveats
 
