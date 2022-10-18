@@ -14,11 +14,51 @@ If you're provisioning cloud infrastructure correctly, you'll provision sensitiv
 
 ## Installing
 
-Coming soon
+### OS X
+
+#### Homebrew
+
+`connectme` is installed into a homebrew tap. You can install it via:
+
+```
+brew install jaxxstorm/tap/connectme
+```
+
+#### Manually
+
+Coming Soon
+
+### Windows
+
+#### Scoop
+
+If you're a scoop user, you can install scoop by adding the bucket:
+
+```
+scoop bucket add jaxxstorm https://github.com/jaxxstorm/scoop-bucket.git
+```
+
+then installing directly from the bucket
+
+```
+scoop install connectme
+```
+
+#### Manually
+
+Coming Soon
 
 ## Usage
 
 ### Prerequisites
+
+#### Tailscale
+
+`connectme` uses Tailscale to create tunneled connections. You need to have Tailscale installed and have created a TailNet.
+
+You can follow the getting started docs [here](https://tailscale.com/kb/1017/install/)
+
+You'll also need an API key. You can get a Tailscale API key from [here](https://tailscale.com/kb/1101/api/)
 
 #### Pulumi
 

@@ -24,8 +24,7 @@ changelog:
 release:
   prerelease: auto
 brews:
-  - 
-    name: connectme
+  - name: connectme
     tap:
       owner: jaxxstorm
       name: homebrew-tap
@@ -35,8 +34,10 @@ brews:
     folder: Formula
     homepage: "https://leebriggs.co.uk"
     description: "Quickly connect to your cloud infrastructure"
+    dependencies:
+    - pulumi
 scoop:
-  url_template: "http://github.com/jaxxstorm/connectme/releases/{{ .Tag }}/{{ .ArtifactName }}"
+  url_template: "http://github.com/jaxxstorm/connectme/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
   bucket:
     owner: jaxxstorm
     name: scoop-bucket
