@@ -20,6 +20,30 @@ Coming soon
 
 ### Prerequisites
 
+#### Pulumi
+
+`connectme` uses Pulumi's automation API. You'll need to ensure you have the Pulumi CLI installed and be logged into a state backend.
+
+Installation docs for your operating system can be found [here](https://www.pulumi.com/docs/get-started/install/)
+
+Once you've installed the Pulumi CLI, you'll need to choose a valid backend. The easiest backend to use is the Pulumi Service backend. Just run the login command, and create an account:
+
+```
+pulumi login
+```
+
+Individual accounts are free forever.
+
+If you don't wish to use the Pulumi service, there are other options. 
+
+The second easiest backend to use is the [Local Backend](https://www.pulumi.com/docs/intro/concepts/state/#logging-into-the-local-filesystem-backend)
+
+```
+pulumi login --local
+```
+
+#### Cloud Provider
+
 Before using `connectme` - you'll need to make sure you have valid cloud provider credentials for the account you wish to use. The mechanism you'll use to provision credentials will be different depending on your cloud provider and authentication mechanism. See the provider-specific documentation below.
 
 You'll need then to sign up to [Tailscale](https://tailscale.com/kb/1017/install/) and create a "Tailnet". Information on how to do this will depend on your operating system. Tailscale offers a generous free tier for individuals.
