@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/jaxxstorm/connectme/pkg/aws"
-	tui "github.com/jaxxstorm/connectme/pkg/terminal"
+	"github.com/jaxxstorm/connecti/pkg/aws"
+	tui "github.com/jaxxstorm/connecti/pkg/terminal"
 	"github.com/pulumi/pulumi/sdk/v3/go/auto/optdestroy"
 	"github.com/spf13/cobra"
 )

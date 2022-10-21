@@ -9,9 +9,9 @@ builds:
   goarch:
     - amd64
     - arm64
-  ldflags: -X github.com/jaxxstorm/connectme/pkg/version.Version={{.Version}}
-  binary: connectme
-  main: ./cmd/connectme/main.go
+  ldflags: -X github.com/jaxxstorm/connecti/pkg/version.Version={{.Version}}
+  binary: connecti
+  main: ./cmd/connecti/main.go
 archives:
 - name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
   format_overrides:
@@ -24,7 +24,7 @@ changelog:
 release:
   prerelease: auto
 brews:
-  - name: connectme
+  - name: connecti
     tap:
       owner: jaxxstorm
       name: homebrew-tap
@@ -37,7 +37,7 @@ brews:
     dependencies:
     - pulumi
 scoop:
-  url_template: "http://github.com/jaxxstorm/connectme/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+  url_template: "http://github.com/jaxxstorm/connecti/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
   bucket:
     owner: jaxxstorm
     name: scoop-bucket

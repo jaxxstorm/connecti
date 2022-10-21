@@ -25,11 +25,11 @@ var ()
 func Command() *cobra.Command {
 	command := &cobra.Command{
 		Use:   "list",
-		Short: "List all active connectme infrastructure",
-		Long:  `List all the connectme infrastructure from the backend store`,
+		Short: "List all active connecti infrastructure",
+		Long:  `List all the connecti infrastructure from the backend store`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 
-			projectName := "connectme"
+			projectName := "connecti"
 			ctx := context.Background()
 
 			ws, err := auto.NewLocalWorkspace(ctx, auto.Project(workspace.Project{
@@ -37,12 +37,12 @@ func Command() *cobra.Command {
 				Runtime: workspace.NewProjectRuntimeInfo("go", nil),
 			}))
 			if err != nil {
-				return fmt.Errorf("error listing connectme instances: %v", err)
+				return fmt.Errorf("error listing connecti instances: %v", err)
 			}
 
 			stacks, err := ws.ListStacks(ctx)
 			if err != nil {
-				return fmt.Errorf("error listing connectme instances: %v", err)
+				return fmt.Errorf("error listing connecti instances: %v", err)
 			}
 
 			writer := tabwriter.NewWriter(os.Stdout, tabwriterMinWidth, tabwriterWidth, tabwriterPadding, tabwriterPadChar, tabwriterFlags)
@@ -51,7 +51,7 @@ func Command() *cobra.Command {
 			for _, stack := range stacks {
 				var url string
 				var resourceCount int
-				var connectMeType string
+				var connectiType string
 
 				// FIXME: this is going to be very slow for lots of stacks.
 				// I don't love it..
@@ -65,20 +65,20 @@ func Command() *cobra.Command {
 					}
 				}
 
-				cfg, err := ws.GetConfig(ctx, stack.Name, "connectme:type")
+				cfg, err := ws.GetConfig(ctx, stack.Name, "connecti:type")
 
 				if err != nil {
 					return fmt.Errorf("error retrieving config value for stack %s: %v", stack.Name, err)
 				}
 
-				connectMeType = cfg.Value
+				connectiType = cfg.Value
 
 				if stack.URL == "" {
 					url = "Not available"
 				} else {
 					url = stack.URL
 				}
-				fmt.Fprintf(writer, "%s\t%s\t%d\t%s\t%s\n", stack.Name, stack.LastUpdate, resourceCount, connectMeType, url)
+				fmt.Fprintf(writer, "%s\t%s\t%d\t%s\t%s\n", stack.Name, stack.LastUpdate, resourceCount, connectiType, url)
 			}
 
 			writer.Flush()

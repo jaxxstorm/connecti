@@ -3,7 +3,7 @@ package version
 import (
 	"fmt"
 
-	"github.com/jaxxstorm/connectme/pkg/version"
+	"github.com/jaxxstorm/connecti/pkg/version"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +11,7 @@ func Command() *cobra.Command {
 	command := &cobra.Command{
 		Use:   "version",
 		Short: "Get the current version",
-		Long:  `Get the current version of connectme`,
+		Long:  `Get the current version of connecti`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 
 			var v string

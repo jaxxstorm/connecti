@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/jaxxstorm/connectme/cmd/connectme/connect"
-	"github.com/jaxxstorm/connectme/cmd/connectme/disconnect"
-	"github.com/jaxxstorm/connectme/cmd/connectme/version"
-	"github.com/jaxxstorm/connectme/cmd/connectme/list"
-	"github.com/jaxxstorm/connectme/pkg/contract"
+	"github.com/jaxxstorm/connecti/cmd/connecti/connect"
+	"github.com/jaxxstorm/connecti/cmd/connecti/disconnect"
+	"github.com/jaxxstorm/connecti/cmd/connecti/list"
+	"github.com/jaxxstorm/connecti/cmd/connecti/version"
+	"github.com/jaxxstorm/connecti/pkg/contract"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -26,7 +26,7 @@ func initConfig() {
 	if cfgFile != "" { // enable ability to specify config file via flag
 		viper.SetConfigFile(cfgFile)
 	} else {
-		viper.SetConfigName(".connectme") // name of config file (without extension)
+		viper.SetConfigName(".connecti") // name of config file (without extension)
 		viper.AddConfigPath("$HOME")     // adding home directory as first search path
 		viper.AddConfigPath(".")
 		viper.AutomaticEnv() // read in environment variables that match
@@ -43,7 +43,7 @@ func initConfig() {
 
 func configureCLI() *cobra.Command {
 	rootCommand := &cobra.Command{
-		Use:  "connectme",
+		Use:  "connecti",
 		Long: "Quickly connect to cloud infrastructure via Tailscale",
 	}
 
@@ -53,7 +53,7 @@ func configureCLI() *cobra.Command {
 	rootCommand.AddCommand(list.Command())
 
 	rootCommand.PersistentFlags().BoolVarP(&debug, "debug", "D", false, "enable debug logging")
-	rootCommand.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.connectme.yaml)")
+	rootCommand.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.connecti.yaml)")
 	viper.BindPFlag("debug", rootCommand.PersistentFlags().Lookup("debug"))
 
 	return rootCommand

@@ -53,7 +53,7 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 			return fmt.Errorf("error creating bastion: %v", err)
 		}
 
-		// ctx.Export("connectMeType", pulumi.String("aws"))
+		// ctx.Export("connectiType", pulumi.String("aws"))
 
 		return nil
 	}

@@ -1,7 +1,7 @@
 package disconnect
 
 import (
-	"github.com/jaxxstorm/connectme/cmd/connectme/disconnect/aws"
+	"github.com/jaxxstorm/connecti/cmd/connecti/disconnect/aws"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +11,7 @@ func Command() *cobra.Command {
 		Short: "Disconnect commands",
 		Long:  "Commands that disconnect infrastructure",
 	}
-	
+
 	command.AddCommand(aws.Command())
 
 	return command

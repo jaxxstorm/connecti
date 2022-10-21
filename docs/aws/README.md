@@ -1,6 +1,6 @@
 # AWS
 
-`connectme` will launch an AWS autoscaling group with a single instance inside an [AWS VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)
+`connecti` will launch an AWS autoscaling group with a single instance inside an [AWS VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)
 
 It creates the following resources:
 
@@ -11,7 +11,7 @@ It creates the following resources:
 
 # Prerequisites
 
-Before running `connectme` you need to have valid AWS credentials for the AWS that contains the VPC you want to connect to.
+Before running `connecti` you need to have valid AWS credentials for the AWS that contains the VPC you want to connect to.
 
 You can verify this by running:
 
@@ -30,10 +30,10 @@ You can do this via environment variables or the configuration file.
 
 # Connecting
 
-Once you've set up your environment, you need to provision your bastion. You can do this by specifying the subnets you want to connect to. `connectme` takes a list of subnets, these subnets all need to be within the same VPC
+Once you've set up your environment, you need to provision your bastion. You can do this by specifying the subnets you want to connect to. `connecti` takes a list of subnets, these subnets all need to be within the same VPC
 
 ```
-connectme connect aws --subnet-ids subnet-0b5bef562bf7308b8 --route "172.20.0.0/22"
+connecti connect aws --subnet-ids subnet-0b5bef562bf7308b8 --route "172.20.0.0/22"
 ```
 
 # Disconnecting
@@ -41,11 +41,11 @@ connectme connect aws --subnet-ids subnet-0b5bef562bf7308b8 --route "172.20.0.0/
 Once you're done using your private connection, you can destroy the connection by name. Listing the connections is done like so:
 
 ```
-connectme list
+connecti list
 ```
 
-Then, select the `connectme` instance you'd like to destroy, and disconnect:
+Then, select the `connecti` instance you'd like to destroy, and disconnect:
 
 ```
-connectme disconnect aws --name <my-name>
+connecti disconnect aws --name <my-name>
 ```

@@ -1,4 +1,4 @@
-module github.com/jaxxstorm/connectme
+module github.com/jaxxstorm/connecti
 
 go 1.19
 

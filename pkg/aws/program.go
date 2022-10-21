@@ -8,7 +8,7 @@ import (
 )
 
 func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, error) {
-	projectName := "connectme"
+	projectName := "connecti"
 	stackName := name
 
 	s, err := auto.UpsertStackInlineSource(ctx, stackName, projectName, Bastion(args))
@@ -29,7 +29,7 @@ func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, er
 		return s, fmt.Errorf("error installing AWS tailscale plugin: %v", err)
 	}
 
-	s.SetConfig(ctx, "connectme:type", auto.ConfigValue{Value: "aws"})
+	s.SetConfig(ctx, "connecti:type", auto.ConfigValue{Value: "aws"})
 	s.SetConfig(ctx, "aws:region", auto.ConfigValue{Value: args.Region})
 	s.SetConfig(ctx, "tailscale:tailnet", auto.ConfigValue{Value: args.Tailnet})
 	s.SetConfig(ctx, "tailscale:apiKey", auto.ConfigValue{Value: args.ApiKey, Secret: true})

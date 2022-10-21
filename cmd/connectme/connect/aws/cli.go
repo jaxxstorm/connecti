@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/jaxxstorm/connectme/pkg/aws"
-	randomname "github.com/jaxxstorm/connectme/pkg/name"
-	tui "github.com/jaxxstorm/connectme/pkg/terminal"
+	"github.com/jaxxstorm/connecti/pkg/aws"
+	randomname "github.com/jaxxstorm/connecti/pkg/name"
+	tui "github.com/jaxxstorm/connecti/pkg/terminal"
 	"github.com/pulumi/pulumi/sdk/v3/go/auto/optup"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
