@@ -1,7 +1,7 @@
 package connect
 
 import (
-	"github.com/jaxxstorm/connecti/cmd/connecti/connect/aws"
+	"github.com/jaxxstorm/connecti/cmd/cli/connect/aws"
 	"github.com/spf13/cobra"
 )
 

@@ -16,3 +16,6 @@
 
 # Gorelease dist directory
 dist/
+docs-output
+node_modules
+.DS_STORE
