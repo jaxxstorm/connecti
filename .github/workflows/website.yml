@@ -27,6 +27,8 @@ jobs:
         run: npm run export
       - name: Publish
         uses: cloudflare/wrangler-action@2.0.0
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         with:
           apiToken: ${{ secrets.CF_TOKEN }}
           command: pages publish --project-name=connecti ${{ github.workspace}}/website/out
