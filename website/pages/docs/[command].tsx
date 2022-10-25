@@ -2,16 +2,16 @@ import ReactMarkdown from "react-markdown";
 import type { NextPage, GetStaticProps, GetStaticPropsContext, GetStaticPaths } from "next";
 import { BasePage } from "../../components/base";
 import * as path from "path";
-import * as fs from "fs";
 import { DocsNavBar } from "../../components/docsNavBar";
+import { content } from "../../utils";
 
 interface DocsProps {
-    docText: string
+
 }
 
-const Docs: NextPage<DocsProps> = ({ docText }) => {
+const Docs: NextPage<content.PageContent<DocsProps>> = ({ data, markdown }) => {
     return(
-        <BasePage>
+        <BasePage title={data.title} description={data.description}>
             <div className="container mx-auto py-12 text-center">
                 <h1>Documentation</h1>
             </div>
@@ -22,7 +22,7 @@ const Docs: NextPage<DocsProps> = ({ docText }) => {
                 </div>
 
                 <div className="cli-doc-markdown">
-                    <ReactMarkdown>{ docText }</ReactMarkdown>
+                    <ReactMarkdown>{ markdown }</ReactMarkdown>
                 </div>
             </div>
         </BasePage>
@@ -45,20 +45,23 @@ export const getStaticPaths: GetStaticPaths = () => {
     };
 };
 
-export const getStaticProps: GetStaticProps<DocsProps> = (ctx: GetStaticPropsContext) => {
+export const getStaticProps: GetStaticProps<content.PageContent<DocsProps>> = (ctx: GetStaticPropsContext) => {
     const command = ctx.params?.command as string;
     if (!command) {
-        return { props: { docText: "Command not found" }};
+        throw Error(`command not provided`);
     }
 
     const commandParts = command.split("-");
     const fileName = [ "connecti", ...commandParts ].join("_") + ".md";
 
-    const docPath = path.join(process.cwd(), "..", "docs-output", fileName);
-    const docsString = fs.readFileSync(docPath).toString();
+    const docPath = path.join(process.cwd(), "content", "docs", fileName);
+    const pageData = content.readContentFile(docPath);
 
     return {
-        props: { docText: docsString },
+        props: {
+            data: pageData.data,
+            markdown: pageData.markdown,
+        },
     };
 }
 

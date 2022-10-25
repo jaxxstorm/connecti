@@ -4,14 +4,15 @@ import { BasePage } from "../../components/base";
 import * as path from "path";
 import * as fs from "fs";
 import { DocsNavBar } from "../../components/docsNavBar";
+import { content } from "../../utils";
 
 interface DocsProps {
-    docText: string
+
 }
 
-const Docs: NextPage<DocsProps> = ({ docText }) => {
+const Docs: NextPage<content.PageContent<DocsProps>> = ({ data, markdown }) => {
     return(
-        <BasePage>
+        <BasePage title={data.title} description={data.description} >
             <div className="container mx-auto py-12 text-center">
                 <h1>Documentation</h1>
             </div>
@@ -22,19 +23,22 @@ const Docs: NextPage<DocsProps> = ({ docText }) => {
                 </div>
 
                 <div className="cli-doc-markdown">
-                    <ReactMarkdown>{ docText }</ReactMarkdown>
+                    <ReactMarkdown>{ markdown }</ReactMarkdown>
                 </div>
             </div>
         </BasePage>
     );
 };
 
-export const getStaticProps: GetStaticProps<DocsProps> = () => {
-    const docPath = path.join(process.cwd(), "..", "docs-output", "connecti.md");
-    const docsString = fs.readFileSync(docPath).toString();
+export const getStaticProps: GetStaticProps<content.PageContent<DocsProps>> = () => {
+    const docPath = path.join(process.cwd(), "content", "docs", "connecti.md");
+    const page = content.readContentFile(docPath);
 
     return {
-        props: { docText: docsString },
+        props: {
+            data: page.data,
+            markdown: page.markdown,
+        },
     };
 }
 

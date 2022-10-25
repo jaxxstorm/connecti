@@ -4,13 +4,15 @@ import { PageFooter } from "./footer";
 import { Header } from "./header";
 
 interface BasePageProps {
+    title: string;
+    description: string;
     children: React.ReactNode;
 }
 
-export const BasePage: React.FC<BasePageProps> = ({ children }) => {
+export const BasePage: React.FC<BasePageProps> = ({ title, description, children }) => {
     return(
         <>
-            <PageHead />
+            <PageHead title={title} description={description} />
             <Header />
 
             <main>
