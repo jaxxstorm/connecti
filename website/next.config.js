@@ -4,7 +4,4 @@ module.exports = {
   images: {
     unoptimized: true
   },
-  experimental: {
-    runtime: "experimental-edge"
-  }
 }
