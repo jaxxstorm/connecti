@@ -1,13 +1,13 @@
 permissions:
   contents: write
 
-name: release
+name: website
 on:
   push:
     branches:
     - main
     paths:
-    - website
+    - website/**
 jobs:    
   goreleaser:
     runs-on: ubuntu-latest
