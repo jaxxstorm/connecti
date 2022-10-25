@@ -29,5 +29,4 @@ jobs:
         uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_TOKEN }}
-          workingDirectory: website/out
-          command: pages publish --project-name=connecti
+          command: pages publish --project-name=connecti ${{ github.workspace}}/website/out
