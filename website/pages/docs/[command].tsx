@@ -41,7 +41,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 
     return {
         paths: staticPaths,
-        fallback: true,
+        fallback: false,
     };
 };
 

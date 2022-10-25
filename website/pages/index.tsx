@@ -25,7 +25,7 @@ const Home: NextPage = () => {
     }, []);
 
     return (
-        <BasePage>
+        <BasePage title="connecti" description="">
             <div className="container mx-auto mt-6">
                 <div className="w-full flex justify-center items-start">
                     <div className="w-full text-center mb-8">

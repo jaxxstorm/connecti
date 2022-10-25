@@ -34,7 +34,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 
     return {
         paths: guidePaths,
-        fallback: true,
+        fallback: false,
     };
 };
 
