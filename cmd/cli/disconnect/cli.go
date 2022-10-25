@@ -1,7 +1,7 @@
 package disconnect
 
 import (
-	"github.com/jaxxstorm/connecti/cmd/connecti/disconnect/aws"
+	"github.com/jaxxstorm/connecti/cmd/cli/disconnect/aws"
 	"github.com/spf13/cobra"
 )
 
