@@ -54,6 +54,32 @@ h6 {
     }
 }
 
+.guide-markdown {
+    h2, h3, h4, h5, h6 {
+        @apply my-6;
+    }
+
+    p {
+        @apply text-lg my-3;
+    }
+
+    a {
+        @apply underline;
+
+        &:hover {
+            @apply font-bold;
+        }
+    }
+
+    ul {
+        @apply list-disc pl-6;
+    }
+
+    pre {
+        @apply rounded bg-gray-500 px-1 py-2 text-black;
+    }
+}
+
 .hero {
     background-image: url("/images/arrows.svg");
     background-size: contain;
