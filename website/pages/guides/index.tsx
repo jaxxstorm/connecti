@@ -20,8 +20,8 @@ const Guides: NextPage<content.PageContent<GuidesProps>> = ({ data }) => {
     const renderItem = (item: Guide, i: number) => {
         return(
             <div key={i} className="w-full lg:w-1/3 p-2">
-                <div className="bg-slate-800 p-3">
-                    <h3>
+                <div className="rounded bg-gray-800 p-6">
+                    <h3 className="mb-3">
                         <Link href={item.link}>
                             <a className="hover:underline">{item.name}</a>
                         </Link>
@@ -60,11 +60,13 @@ export const getStaticProps: GetStaticProps<content.PageContent<GuidesProps>> = 
     const contentPath = path.join(process.cwd(), "content", "guides");
     const guides = fs.readdirSync(contentPath).filter(d => d !== "index.md");
     page.data.guides = guides.map(g => {
+        const page = content.readContentFile(path.join(contentPath, g));
+
         const name = g.split(".")[0];
         return {
-            name,
+            name: page.data.title,
             link: `/guides/${name}`,
-            description: "some description",
+            description: page.data.description,
         };
     });
 

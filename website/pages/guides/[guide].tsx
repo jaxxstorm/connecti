@@ -1,5 +1,6 @@
 import type { NextPage, GetStaticProps, GetStaticPaths, GetStaticPropsContext } from "next";
 import { BasePage } from "../../components/base";
+import { Hero } from "../../components/hero";
 import { content } from "../../utils";
 import * as path from "path";
 import ReactMarkdown from "react-markdown";
@@ -12,11 +13,9 @@ interface Guide {
 const Guide: NextPage<content.PageContent<Guide>> = ({ data, markdown }) => {
     return(
         <BasePage title={data.title} description={data.description}>
-            <div className="container mx-auto text-center py-12">
-                <h1>{ data.title }</h1>
-            </div>
+            <Hero name={data.title} />
 
-            <div className="container mx-auto">
+            <div className="container mx-auto guide-markdown">
                 <ReactMarkdown>
                     { markdown }
                 </ReactMarkdown>
@@ -29,8 +28,6 @@ export const getStaticPaths: GetStaticPaths = () => {
     const contentPath = path.join(process.cwd(), "content", "guides");
     const guides = fs.readdirSync(contentPath).filter(d => d !== "index.md");
     const guidePaths = guides.map(g => `/guides/${g.split(".")[0]}`);
-
-    console.log(guidePaths);
 
     return {
         paths: guidePaths,
