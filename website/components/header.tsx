@@ -23,7 +23,7 @@ export const Header: React.FC = ({}) => {
                     <a href="/docs/" className="text-xl hover:text-gray-400">Docs</a>
                 </div>
                 <div className="flex-grow flex justify-end items-center pr-16">
-                    <a href="/#install" className="rounded bg-gray-700 px-6 py-3 text-white font-bold hover:bg-gray-600">Install</a>
+                    <a href="/#get-started" className="rounded bg-gray-700 px-6 py-3 text-white font-bold hover:bg-gray-600">Get Started</a>
                 </div>
             </div>
         </header>
