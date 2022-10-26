@@ -1,5 +1,6 @@
 import type { NextPage, GetStaticProps } from "next";
 import { BasePage } from "../../components/base";
+import { Hero } from "../../components/hero";
 import { content } from "../../utils";
 import * as path from "path";
 import * as fs from "fs";
@@ -41,9 +42,7 @@ const Guides: NextPage<content.PageContent<GuidesProps>> = ({ data }) => {
 
     return(
         <BasePage title={data.title} description={data.description}>
-            <div className="container mx-auto text-center py-12">
-                <h1>How To Guides</h1>
-            </div>
+            <Hero name="How To Guides" />
 
             <div className="container mx-auto">
                 <div className="flex flex-wrap">
