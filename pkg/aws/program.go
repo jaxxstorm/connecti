@@ -19,14 +19,14 @@ func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, er
 	w := s.Workspace()
 
 	// FIXME:
-	err = w.InstallPlugin(ctx, "aws", "v5.16.0")
+	err = w.InstallPlugin(ctx, "aws", "v5.19.0")
 	if err != nil {
 		return s, fmt.Errorf("error installing AWS resource plugin: %v", err)
 	}
 
-	err = w.InstallPluginFromServer(ctx, "aws-tailscale", "v0.0.7", "github://api.github.com/lbrlabs")
+	err = w.InstallPluginFromServer(ctx, "tailscale-bastion", "v0.0.9", "github://api.github.com/lbrlabs")
 	if err != nil {
-		return s, fmt.Errorf("error installing AWS tailscale plugin: %v", err)
+		return s, fmt.Errorf("error installing tailscale plugin: %v", err)
 	}
 
 	s.SetConfig(ctx, "connecti:type", auto.ConfigValue{Value: "aws"})
