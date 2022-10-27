@@ -8,12 +8,13 @@ require (
 	github.com/charmbracelet/bubbles v0.14.0
 	github.com/charmbracelet/bubbletea v0.22.1
 	github.com/cip8/autoname v1.0.1
-	github.com/lbrlabs/pulumi-aws-tailscalebastion/sdk v0.0.2
+	github.com/lbrlabs/pulumi-tailscale-bastion/sdk v0.0.9
 	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de
-	github.com/pulumi/pulumi-aws/sdk/v5 v5.16.2
-	github.com/pulumi/pulumi/sdk/v3 v3.42.1-0.20221017235917-bbe62900becd
+	github.com/pulumi/pulumi-aws/sdk/v5 v5.19.0
+	github.com/pulumi/pulumi/sdk/v3 v3.44.2
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.13.0
+	golang.org/x/text v0.3.7
 )
 
 require (
@@ -95,7 +96,6 @@ require (
 	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2 // indirect
 	golang.org/x/sys v0.0.0-20220823224334-20c2bfdbfe24 // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
-	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220519153652-3a47de7e79bd // indirect
 	google.golang.org/grpc v1.46.2 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
