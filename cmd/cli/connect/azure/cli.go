@@ -71,8 +71,6 @@ func Command() *cobra.Command {
 				name = randomname.Generate()
 			}
 
-			fmt.Println(subnetName)
-
 			ctx := context.Background()
 			program, err := azure.Program(name, ctx, azure.BastionArgs{
 				Name:               name,
