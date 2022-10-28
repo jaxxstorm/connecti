@@ -2,6 +2,7 @@ package connect
 
 import (
 	"github.com/jaxxstorm/connecti/cmd/cli/connect/aws"
+	"github.com/jaxxstorm/connecti/cmd/cli/connect/azure"
 	"github.com/spf13/cobra"
 )
 
@@ -13,6 +14,7 @@ func Command() *cobra.Command {
 	}
 
 	command.AddCommand(aws.Command())
+	command.AddCommand(azure.Command())
 
 	return command
 }
