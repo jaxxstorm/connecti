@@ -42,18 +42,19 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 			subnets = append(subnets, pulumi.String(subnetId))
 		}
 
-		_, err := awstailscale.NewBastion(ctx, args.Name, &awstailscale.BastionArgs{
+		bastion, err := awstailscale.NewBastion(ctx, args.Name, &awstailscale.BastionArgs{
 			VpcId:     pulumi.String(vpcId),
 			SubnetIds: subnets,
 			Route:     pulumi.String(route),
 			Region:    pulumi.String(args.Region),
 		})
-
 		if err != nil {
 			return fmt.Errorf("error creating bastion: %v", err)
 		}
 
-		// ctx.Export("connectiType", pulumi.String("aws"))
+		ctx.Export("privateKey", bastion.PrivateKey)
+
+		ctx.Export("connectiType", pulumi.String("aws"))
 
 		return nil
 	}

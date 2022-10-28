@@ -8,9 +8,11 @@ require (
 	github.com/charmbracelet/bubbles v0.14.0
 	github.com/charmbracelet/bubbletea v0.22.1
 	github.com/cip8/autoname v1.0.1
-	github.com/lbrlabs/pulumi-tailscale-bastion/sdk v0.0.9
+	github.com/gobeam/stringy v0.0.5
+	github.com/lbrlabs/pulumi-tailscale-bastion/sdk v0.0.10
 	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de
 	github.com/pulumi/pulumi-aws/sdk/v5 v5.19.0
+	github.com/pulumi/pulumi-azure/sdk/v5 v5.23.0
 	github.com/pulumi/pulumi/sdk/v3 v3.44.2
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.13.0
