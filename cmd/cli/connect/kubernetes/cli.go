@@ -13,10 +13,10 @@ import (
 )
 
 var (
-	name               string
-	tailnet            string
-	apiKey             string
-	routes              []string
+	name    string
+	tailnet string
+	apiKey  string
+	routes  []string
 )
 
 func Command() *cobra.Command {
@@ -44,18 +44,21 @@ func Command() *cobra.Command {
 				return fmt.Errorf("must specify a tailscale api key. See --help")
 			}
 
-		
 			if name == "" {
 				name = randomname.Generate()
 			}
 
+			if len(routes) == 0 {
+				return fmt.Errorf("must specify at least one route. See --help")
+			}
+
 			ctx := context.Background()
 			program, err := kubernetes.Program(name, ctx, kubernetes.BastionArgs{
-				Name:               name,
-				Routes: 		    routes,
-				Tailnet:            tailnet,
-				ApiKey:             apiKey,
-				CreateNamespace:    true, // FIXME: should we allow usage of an existing namespace?
+				Name:            name,
+				Routes:          routes,
+				Tailnet:         tailnet,
+				ApiKey:          apiKey,
+				CreateNamespace: true, // FIXME: should we allow usage of an existing namespace?
 			})
 			if err != nil {
 				return err
@@ -97,12 +100,10 @@ func Command() *cobra.Command {
 	command.Flags().StringVar(&apiKey, "api-key", "", "The tailnet api key to use. See: https://login.tailscale.com/admin/settings/keys")
 	command.Flags().StringSliceVar(&routes, "routes", nil, "The routes to advertise. This is likely the cluster Pod CIDR and Service CIDR.")
 
-
 	viper.BindPFlag("name", command.Flags().Lookup("name"))
 	viper.BindPFlag("tailnet", command.Flags().Lookup("tailnet"))
 	viper.BindPFlag("apiKey", command.Flags().Lookup("api-key"))
-	viper.BindPFlag("route", command.Flags().Lookup("route"))
-
+	viper.BindPFlag("routes", command.Flags().Lookup("routes"))
 
 	// Bind the env vars to the provider env vars
 	viper.BindEnv("tailnet", "TAILSCALE_TAILNET")
