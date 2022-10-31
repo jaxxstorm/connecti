@@ -15,10 +15,14 @@ const Guide: NextPage<content.PageContent<Guide>> = ({ data, markdown }) => {
         <BasePage title={data.title} description={data.description}>
             <Hero name={data.title} />
 
-            <div className="container mx-auto guide-markdown">
-                <ReactMarkdown>
-                    { markdown }
-                </ReactMarkdown>
+            <div className="container mx-auto mb-16">
+                <div className="px-3 lg:max-w-4xl mx-auto">
+                    <div className="guide-markdown">
+                        <ReactMarkdown>
+                            { markdown }
+                        </ReactMarkdown>
+                    </div>
+                </div>
             </div>
         </BasePage>
     );
