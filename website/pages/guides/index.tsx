@@ -19,15 +19,15 @@ interface GuidesProps {
 const Guides: NextPage<content.PageContent<GuidesProps>> = ({ data }) => {
     const renderItem = (item: Guide, i: number) => {
         return(
-            <div key={i} className="w-full lg:w-1/3 p-2">
-                <div className="rounded bg-gray-800 p-6">
-                    <h3 className="mb-3">
-                        <Link href={item.link}>
-                            <a className="hover:underline">{item.name}</a>
-                        </Link>
-                    </h3>
-                    <p>{item.description}</p>
-                </div>
+            <div key={i} className="w-full lg:w-1/3 p-6">
+                <Link href={item.link}>
+                    <div className="rounded bg-gray-800 p-6 shadow-lg shadow-gray-700 hover:scale-110 ease-in-out duration-300 cursor-pointer">
+                        <h3 className="mb-3">
+                            <a className="underline">{item.name}</a>
+                        </h3>
+                        <p>{item.description}</p>
+                    </div>
+                </Link>
             </div>
         );
     };
@@ -45,6 +45,7 @@ const Guides: NextPage<content.PageContent<GuidesProps>> = ({ data }) => {
             <Hero name="How To Guides" />
 
             <div className="container mx-auto">
+                <p className="text-xl my-8 max-w-2xl mx-auto text-center">A collection of guides on how to connect to subnets and resources in different clouds.</p>
                 <div className="flex flex-wrap">
                     { data.guides?.length > 0 ? data.guides.map(renderItem) : renderEmpty() }
                 </div>
