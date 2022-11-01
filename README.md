@@ -96,9 +96,11 @@ Finally, you'll also need a Tailscale API key, to allow you to create resources 
 
 Provisioning your infrastructure will depend on the cloud provider you're using. At the time of writing, `connecti` supports the following cloud providers:
 
-| Cloud Provider| Usage Documentation|
-| ------------- |:-------------:|
-| AWS           | [Docs](../docs/aws/README.md) |
+|   Cloud Provider   |         Usage Documentation          |
+| -------------------|:------------------------------------:|
+| AWS                | [Docs](../docs/aws/README.md)        |
+| Azure              | [Docs](../docs/azure/README.md)      |
+| Kubernetes         | [Docs](../docs/kubernetes/README.md) |
 
 ## Configuration
 
@@ -109,6 +111,7 @@ The configuration file allows you to store common configurations so you don't ha
 ```yaml
 tailnet: "my-tailnet"
 aws:region: "us-west-2"
+azure:location: "WestUS2"
 ```
 
 You can also specify configuration values as environment variables. The full list of configuration values and environment variables is as follows:
@@ -118,6 +121,7 @@ You can also specify configuration values as environment variables. The full lis
 | TAILSCALE_API_KEY | apiKey     | tskey-<random> |
 | TAILSCALE_TAILNET | tailnet    | my-cool-tailnet |
 | AWS_REGION        | aws:region | us-west-2 |
+| ARM_LOCATION      | azure:region | WestUS2 |
 
 ## Caveats
 
