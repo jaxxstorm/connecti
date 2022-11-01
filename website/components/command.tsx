@@ -16,7 +16,7 @@ export const Command: React.FC<CommandProps> = ({ text }) => {
     };
 
     return(
-        <div className="rounded bg-gray-500 px-1 py-2 text-black my-6 flex">
+        <div className="rounded bg-gray-300 px-1 py-2 text-black my-6 flex">
             <p>$ {text}</p>
             <a onClick={handleCopy} className="flex-grow text-right cursor-pointer hover:underline">{ copyText }</a>
         </div>

@@ -84,3 +84,7 @@ h6 {
     background-image: url("/images/arrows.svg");
     background-size: contain;
 }
+
+.clickable-card {
+    @apply w-full h-full rounded bg-gray-300 p-6 cursor-pointer flex justify-center items-center shadow-lg shadow-gray-700 hover:scale-110 ease-in-out duration-300;
+}
