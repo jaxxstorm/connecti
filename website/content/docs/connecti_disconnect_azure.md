@@ -1,23 +1,23 @@
 ---
-title: Disconnect Aws
-description: Learn how to use the Disconnect Aws command to help you create, manage, and destroy private subnet connections.
+title: Disconnect Azure
+description: Learn how to use the Disconnect Azure command to help you create, manage, and destroy private subnet connections.
 ---
-## connecti disconnect aws
+## connecti disconnect azure
 
-Disconnect from AWS infrastructure
+Disconnect from Azure infrastructure
 
 ### Synopsis
 
-Tear down a tailscale bastion in an AWS VPC via an autoscaling group
+Tear down a tailscale bastion in an Azure virtual network via a scale set
 
 ```
-connecti disconnect aws [flags]
+connecti disconnect azure [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help          help for aws
+  -h, --help          help for azure
       --name string   The name of the bastion to tear down
 ```
 
