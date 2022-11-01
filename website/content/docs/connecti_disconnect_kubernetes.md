@@ -1,23 +1,23 @@
 ---
-title: Disconnect Aws
-description: Learn how to use the Disconnect Aws command to help you create, manage, and destroy private subnet connections.
+title: Disconnect Kubernetes
+description: Learn how to use the Disconnect Kubernetes command to help you create, manage, and destroy private subnet connections.
 ---
-## connecti disconnect aws
+## connecti disconnect kubernetes
 
-Disconnect from AWS infrastructure
+Disconnect from Kubernetes infrastructure
 
 ### Synopsis
 
-Tear down a tailscale bastion in an AWS VPC via an autoscaling group
+Tear down a tailscale bastion in an Kubernetes cluster via a deployment
 
 ```
-connecti disconnect aws [flags]
+connecti disconnect kubernetes [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help          help for aws
+  -h, --help          help for kubernetes
       --name string   The name of the bastion to tear down
 ```
 
