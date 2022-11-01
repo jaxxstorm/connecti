@@ -21,7 +21,7 @@ const Guides: NextPage<content.PageContent<GuidesProps>> = ({ data }) => {
         return(
             <div key={i} className="w-full lg:w-1/3 p-6">
                 <Link href={item.link}>
-                    <div className="rounded bg-gray-800 p-6 shadow-lg shadow-gray-700 hover:scale-110 ease-in-out duration-300 cursor-pointer">
+                    <div className="clickable-card flex-col text-black">
                         <h3 className="mb-3">
                             <a className="underline">{item.name}</a>
                         </h3>
