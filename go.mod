@@ -9,11 +9,11 @@ require (
 	github.com/charmbracelet/bubbletea v0.22.1
 	github.com/cip8/autoname v1.0.1
 	github.com/gobeam/stringy v0.0.5
-	github.com/lbrlabs/pulumi-tailscale-bastion/sdk v0.0.10
+	github.com/lbrlabs/pulumi-tailscale-bastion/sdk v0.0.11
 	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de
 	github.com/pulumi/pulumi-aws/sdk/v5 v5.19.0
 	github.com/pulumi/pulumi-azure/sdk/v5 v5.23.0
-	github.com/pulumi/pulumi/sdk/v3 v3.44.2
+	github.com/pulumi/pulumi/sdk/v3 v3.44.3
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.13.0
 	golang.org/x/text v0.3.7
@@ -77,6 +77,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pkg/term v1.1.0 // indirect
+	github.com/pulumi/pulumi-kubernetes/sdk/v3 v3.22.1 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect

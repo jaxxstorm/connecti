@@ -1,4 +1,4 @@
-package azure
+package kubernetes
 
 import (
 	"context"
@@ -18,10 +18,10 @@ func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, er
 
 	w := s.Workspace()
 
-	// FIXME: retrieve latest plugin from GitHub releases
-	err = w.InstallPlugin(ctx, "azure", "v5.23.0")
+	// FIXME:
+	err = w.InstallPlugin(ctx, "kubernetes", "v3.22.1")
 	if err != nil {
-		return s, fmt.Errorf("error installing Azure resource plugin: %v", err)
+		return s, fmt.Errorf("error installing Kubernetes resource plugin: %v", err)
 	}
 
 	err = w.InstallPluginFromServer(ctx, "tailscale-bastion", "v0.0.11", "github://api.github.com/lbrlabs")
@@ -29,8 +29,7 @@ func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, er
 		return s, fmt.Errorf("error installing tailscale plugin: %v", err)
 	}
 
-	s.SetConfig(ctx, "connecti:type", auto.ConfigValue{Value: "azure"})
-	s.SetConfig(ctx, "azure:location", auto.ConfigValue{Value: args.Location})
+	s.SetConfig(ctx, "connecti:type", auto.ConfigValue{Value: "kubernetes"})
 	s.SetConfig(ctx, "tailscale:tailnet", auto.ConfigValue{Value: args.Tailnet})
 	s.SetConfig(ctx, "tailscale:apiKey", auto.ConfigValue{Value: args.ApiKey, Secret: true})
 

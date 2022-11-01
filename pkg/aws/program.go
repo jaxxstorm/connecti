@@ -24,7 +24,7 @@ func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, er
 		return s, fmt.Errorf("error installing AWS resource plugin: %v", err)
 	}
 
-	err = w.InstallPluginFromServer(ctx, "tailscale-bastion", "v0.0.9", "github://api.github.com/lbrlabs")
+	err = w.InstallPluginFromServer(ctx, "tailscale-bastion", "v0.0.11", "github://api.github.com/lbrlabs")
 	if err != nil {
 		return s, fmt.Errorf("error installing tailscale plugin: %v", err)
 	}
