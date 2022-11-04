@@ -1,26 +1,46 @@
 import React from "react";
 import Link from "next/link";
 
-export const DocsNavBar: React.FC = () => {
+interface DocsNavProps {
+
+}
+
+export const DocsNavBar: React.FC<DocsNavProps> = ({}) => {
     return(
         <>
             <h3 className="mb-3">
                 <Link href="/docs/">
-                    <a className="hover:underline">CLI</a>
+                    <p className="hover:underline">CLI</p>
                 </Link>
             </h3>
             <ul className="list-none">
                 <li className="my-2">
                     <h4>
                         <Link href="/docs/connect/" className="hover:font-bold">
-                            <a className="hover:underline">connect</a>
+                            <p className="hover:underline">connect</p>
                         </Link>
                     </h4>
                     <ul className="list-none pl-6">
                         <li>
                             <h5>
                                 <Link href="/docs/connect-aws/">
-                                    <a className="hover:underline">aws</a>
+                                    <p className="hover:underline">aws</p>
+                                </Link>
+                            </h5>
+                        </li>
+
+                        <li>
+                            <h5>
+                                <Link href="/docs/connect-azure/">
+                                    <p className="hover:underline">azure</p>
+                                </Link>
+                            </h5>
+                        </li>
+
+                        <li>
+                            <h5>
+                                <Link href="/docs/connect-kubernetes/">
+                                    <p className="hover:underline">kubernetes</p>
                                 </Link>
                             </h5>
                         </li>
@@ -29,7 +49,7 @@ export const DocsNavBar: React.FC = () => {
                 <li className="my-2">
                     <h4>
                         <Link href="/docs/disconnect/">
-                            <a className="hover:underline">disconnect</a>
+                            <p className="hover:underline">disconnect</p>
                         </Link>
                     </h4>
 
@@ -37,7 +57,23 @@ export const DocsNavBar: React.FC = () => {
                         <li>
                             <h5>
                                 <Link href="/docs/disconnect-aws/">
-                                    <a className="hover:underline">aws</a>
+                                    <p className="hover:underline">aws</p>
+                                </Link>
+                            </h5>
+                        </li>
+
+                        <li>
+                            <h5>
+                                <Link href="/docs/disconnect-azure/">
+                                    <p className="hover:underline">azure</p>
+                                </Link>
+                            </h5>
+                        </li>
+
+                        <li>
+                            <h5>
+                                <Link href="/docs/disconnect-kubernetes/">
+                                    <p className="hover:underline">kubernetes</p>
                                 </Link>
                             </h5>
                         </li>
@@ -46,14 +82,14 @@ export const DocsNavBar: React.FC = () => {
                 <li className="my-2">
                     <h4>
                         <Link href="/docs/list/">
-                            <a className="hover:underline">list</a>
+                            <p className="hover:underline">list</p>
                         </Link>
                     </h4>
                 </li>
                 <li className="my-2">
                     <h4>
                         <Link href="/docs/version/">
-                            <a className="hover:underline">version</a>
+                            <p className="hover:underline">version</p>
                         </Link>
                     </h4>
                 </li>

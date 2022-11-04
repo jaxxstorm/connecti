@@ -1,5 +1,3 @@
-# AWS
-
 `connecti` will launch an Azure scaleset which allows you to route traffic and access an Azure [Virtual Network](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview)
 
 It creates the following resources:
@@ -7,7 +5,7 @@ It creates the following resources:
 - an Azure scaleset running Tailscale
 
 
-# Prerequisites
+## Prerequisites
 
 Before running `connecti` you need to have created an Azure virtual network and subnet, as well as valid Azure credentials, and have selected a subscription
 
@@ -28,7 +26,7 @@ If you have valid Azure credentials, you then need to populate your configuratio
 
 You can do this via environment variables, command line flags, or the configuration file.
 
-# Connecting
+## Connecting
 
 Once you've set up your environment, you need to provision your bastion. You'll need to specify the routes you wish to propagate
 
@@ -36,7 +34,7 @@ Once you've set up your environment, you need to provision your bastion. You'll 
 connecti connect azure --subnet-name tailscale --virtual-network-name tailscale722bd552 --route 172.16.0.0/22 --resource-group-name tailscale243d4895
 ```
 
-# Disconnecting
+## Disconnecting
 
 Once you're done using your private connection, you can destroy the connection by name. Listing the connections is done like so:
 

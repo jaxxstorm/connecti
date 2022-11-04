@@ -48,10 +48,17 @@ export const getStaticProps: GetStaticProps<content.PageContent<Guide>> = (ctx: 
     const docPath = path.join(process.cwd(), "content", "guides", `${guide}.md`);
     const page = content.readContentFile<Guide>(docPath);
 
+    let markdown = "";
+    try {
+        markdown = fs.readFileSync(path.join(process.cwd(), "..", "docs", guide, "README.md")).toString();
+    } catch (e) {
+        markdown = "Coming soon...";
+    }
+
     return {
         props: {
             data: page.data,
-            markdown: page.markdown,
+            markdown,
         },
     };
 };
