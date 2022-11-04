@@ -23,7 +23,7 @@ const Guides: NextPage<content.PageContent<GuidesProps>> = ({ data }) => {
                 <Link href={item.link}>
                     <div className="clickable-card flex-col text-black">
                         <h3 className="mb-3">
-                            <a className="underline">{item.name}</a>
+                            <p className="underline">{item.name}</p>
                         </h3>
                         <p>{item.description}</p>
                     </div>

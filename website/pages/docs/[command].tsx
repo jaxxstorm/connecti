@@ -32,8 +32,12 @@ export const getStaticPaths: GetStaticPaths = () => {
     const staticPaths = [
         "/docs/connect",
         "/docs/connect-aws",
+        "/docs/connect-azure",
+        "/docs/connect-kubernetes",
         "/docs/disconnect",
         "/docs/disconnect-aws",
+        "/docs/disconnect-azure",
+        "/docs/disconnect-kubernetes",
         "/docs/list",
         "/docs/version"
     ];

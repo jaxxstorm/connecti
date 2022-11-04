@@ -88,3 +88,10 @@ h6 {
 .clickable-card {
     @apply w-full h-full rounded bg-gray-300 p-6 cursor-pointer flex justify-center items-center shadow-lg shadow-gray-700 hover:scale-110 ease-in-out duration-300;
 }
+
+.getting-started-arrowhead {
+    @apply absolute;
+
+    bottom: -10px;
+    right: -11px;
+}

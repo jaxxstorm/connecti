@@ -1,5 +1,3 @@
-# AWS
-
 `connecti` will launch a Kubernetes deployment which allows you to route traffic and access private cluster resources like Cluster IPs
 
 It creates the following resources:
@@ -8,7 +6,7 @@ It creates the following resources:
 - a Kubernetes secret containing an ephemeral and pre-authorized auth key
 
 
-# Prerequisites
+## Prerequisites
 
 Before running `connecti` you need to have a running Kubernetes cluster and a valid `KUBECONFIG` to access that cluster.
 
@@ -26,7 +24,7 @@ If you have valid kubernetes credentials, you then need to populate your configu
 
 You can do this via environment variables, command line flags, or the configuration file.
 
-# Connecting
+## Connecting
 
 Once you've set up your environment, you need to provision your bastion. You'll need to specify the routes you wish to propagate
 
@@ -34,7 +32,7 @@ Once you've set up your environment, you need to provision your bastion. You'll 
 connecti connect kubernetes --routes 10.100.0.0/16
 ```
 
-# Disconnecting
+## Disconnecting
 
 Once you're done using your private connection, you can destroy the connection by name. Listing the connections is done like so:
 

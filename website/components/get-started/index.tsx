@@ -37,15 +37,28 @@ interface StepProps extends StepLabelProps {
 }
 
 const GettingStartedStep: React.FC<StepProps> = ({ step, label, color, topPadding, children }) => {
-    const topPaddingClass = topPadding ? " pt-16" : " pt-4";
+    const borderColor: Record<StepLabelProps["color"], string> = {
+        "blue": "border-l-blue-900",
+        "green": "border-l-green-900",
+        "red": "border-l-red-900",
+    };
+
+    const flipArrow = (step % 2) === 0;
+    let borderClass = `border-l-8 rounded-md ${borderColor[color]}`;
+    if (flipArrow) {
+        borderClass = `border-l-8 rounded-md ${borderColor[color]}`;
+    }
 
     return(
-        <div className="flex">
-            <div className={`w-1/4 border-r border-white${topPaddingClass}`}>
+        <div className={`flex py-4 px-3 pb-16 my-10 ${borderClass}`}>
+            <div className={`w-1/4 border-r-2 border-r-gray-700 relative`}>
                 <StepLabel step={step} label={label} color={color} />
+                {/* <div className="getting-started-arrowhead">
+                    <img src="/images/down-triangle.svg" />
+                </div> */}
             </div>
 
-            <div className={`w-3/4 px-12${topPaddingClass}`}>
+            <div className={`w-3/4 px-12`}>
                 {children}
             </div>
         </div>
@@ -59,6 +72,13 @@ const cloudCredentialLinks: Record<GettingStaringClouds, string> = {
     "aws": "https://www.pulumi.com/registry/packages/aws/",
     "azure": "https://www.pulumi.com/registry/packages/azure-native/",
     "google": "https://www.pulumi.com/registry/packages/gcp/",
+};
+
+const cloudConnectionCommands: Record<GettingStaringClouds, string> = {
+    "kubernetes": `connecti connect kubernetes --routes="<your_route>"`,
+    "aws": `connecti connect aws --subnet-ids="<your_subnet_id>"`,
+    "azure": `connecti connect azure --subnet-name="<your_subnet_name>" --virtual-network-name="<your_virtual_network_name>" --route="<your_route>" --resource-group-name="<your_resource_group_name>"`,
+    "google": `connecti connect google --subnet-ids="<your_subnet_id>"`,
 };
 
 export const GetStarted: React.FC = ({}) => {
@@ -106,7 +126,9 @@ export const GetStarted: React.FC = ({}) => {
             </p>
 
             <h3 className="text-center my-8">Pick a Cloud</h3>
-            {renderCloudCheckboxes()}
+            <div className="mb-20">
+                {renderCloudCheckboxes()}
+            </div>
 
             <GettingStartedStep step={1} label="Install connecti" color="blue">
                 <h4 className="font-bold">Homebrew</h4>
@@ -185,7 +207,7 @@ export const GetStarted: React.FC = ({}) => {
                 <p>
                     You can create a connection by running the following command:
                 </p>
-                <Command text={`connecti connect ${cloud} --subnet-ids="<your_subnet_id>"`} />
+                <Command text={cloudConnectionCommands[cloud]} />
             </GettingStartedStep>
 
             <GettingStartedStep step={5} label="Disconnect" color="red" topPadding={true}>
