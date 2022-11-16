@@ -18,6 +18,7 @@ var (
 	name      string
 	tailnet   string
 	apiKey    string
+	routes    []string
 )
 
 func Command() *cobra.Command {
@@ -65,6 +66,7 @@ func Command() *cobra.Command {
 				Region:    region,
 				Tailnet:   tailnet,
 				ApiKey:    apiKey,
+				Routes:    routes,
 			})
 			if err != nil {
 				return err
@@ -105,11 +107,13 @@ func Command() *cobra.Command {
 	command.Flags().StringVar(&name, "name", "", "Unique name to use for your bastion.")
 	command.Flags().StringVar(&tailnet, "tailnet", "", "The name of the tailnet to connect to. See: https://login.tailscale.com/admin/settings/general")
 	command.Flags().StringVar(&apiKey, "api-key", "", "The tailnet api key to use. See: https://login.tailscale.com/admin/settings/keys")
+	command.Flags().StringSliceVar(&routes, "routes", nil, "The routes to advertise to tailscale.")
 	command.Flags().StringSliceVar(&subnetIds, "subnet-ids", nil, "The subnet Ids to use in the Vpc.")
 
 	viper.BindPFlag("aws:region", command.Flags().Lookup("region"))
 	viper.BindPFlag("subnetIds", command.Flags().Lookup("subnet-ids"))
 	viper.BindPFlag("name", command.Flags().Lookup("name"))
+	viper.BindPFlag("routes", command.Flags().Lookup("routes"))
 	viper.BindPFlag("tailnet", command.Flags().Lookup("tailnet"))
 	viper.BindPFlag("apiKey", command.Flags().Lookup("api-key"))
 

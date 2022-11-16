@@ -6,4 +6,5 @@ type BastionArgs struct {
 	Region    string
 	Tailnet   string
 	ApiKey    string
+	Routes    []string
 }
