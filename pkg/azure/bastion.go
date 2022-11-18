@@ -2,16 +2,18 @@ package azure
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/gobeam/stringy"
 	azure "github.com/lbrlabs/pulumi-tailscale-bastion/sdk/go/bastion/azure"
 	"github.com/pulumi/pulumi-azure/sdk/v5/go/azure/network"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/gobeam/stringy"
 )
 
 func Bastion(args BastionArgs) pulumi.RunFunc {
 	return func(ctx *pulumi.Context) error {
 
+		var route string
 
 		virtualNetwork, err := network.LookupVirtualNetwork(ctx, &network.LookupVirtualNetworkArgs{
 			Name:              args.VirtualNetworkName,
@@ -29,13 +31,25 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 		if err != nil {
 			return fmt.Errorf("error looking up subnet: %v", err)
 		}
-	
+
+		routes := args.Routes
+
+		// check if we're supplying our own routes via the CLI
+		if len(routes) == 0 {
+			// if not, try and calculate the routes from the subnet
+			routes = append(routes, subnet.AddressPrefix)
+			if len(subnet.AddressPrefixes) > 0 {
+				routes = append(routes, subnet.AddressPrefixes...)
+			}
+		}
+		route = strings.Join(routes, ",")
+
 		// Azure has very strict naming requirements for scale sets
 		name := stringy.New(args.Name).CamelCase()
 
 		bastion, err := azure.NewBastion(ctx, name, &azure.BastionArgs{
 			Location:          pulumi.String(args.Location),
-			Route:             pulumi.String(args.Route), // FIXME: can we get the route from the returned vnet?
+			Route:             pulumi.String(route), // FIXME: can we get the route from the returned vnet?
 			SubnetId:          pulumi.String(subnet.Id),
 			ResourceGroupName: pulumi.String(args.ResourceGroupName),
 		})

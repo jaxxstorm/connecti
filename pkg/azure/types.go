@@ -8,5 +8,5 @@ type BastionArgs struct {
 	VirtualNetworkName string
 	Tailnet            string
 	ApiKey             string
-	Route              string
+	Routes             []string
 }

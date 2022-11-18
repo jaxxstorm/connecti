@@ -20,7 +20,7 @@ var (
 	apiKey             string
 	resourceGroupName  string
 	virtualNetworkName string
-	route              string
+	routes             []string
 )
 
 func Command() *cobra.Command {
@@ -59,10 +59,6 @@ func Command() *cobra.Command {
 				return fmt.Errorf("must specify a virtual network name. See --help")
 			}
 
-			if route == "" {
-				return fmt.Errorf("you must specify a route to advertise. See --help")
-			}
-
 			if resourceGroupName == "" {
 				return fmt.Errorf("you must specify a resource group where your network resides. See --help")
 			}
@@ -80,7 +76,7 @@ func Command() *cobra.Command {
 				VirtualNetworkName: virtualNetworkName,
 				Tailnet:            tailnet,
 				ApiKey:             apiKey,
-				Route:              route,
+				Routes:              routes,
 			})
 			if err != nil {
 				return err
@@ -122,7 +118,7 @@ func Command() *cobra.Command {
 	command.Flags().StringVar(&tailnet, "tailnet", "", "The name of the tailnet to connect to. See: https://login.tailscale.com/admin/settings/general")
 	command.Flags().StringVar(&apiKey, "api-key", "", "The tailnet api key to use. See: https://login.tailscale.com/admin/settings/keys")
 	command.Flags().StringVar(&subnetName, "subnet-name", "", "The subnet name to use in the virtual network.")
-	command.Flags().StringVar(&route, "route", "", "The route you wish to advertise.")
+	command.Flags().StringSliceVar(&routes, "routes", nil, "The routes to advertise to tailscale.")
 	command.Flags().StringVar(&virtualNetworkName, "virtual-network-name", "", "The virtual network to which your chosen subnet belongs.")
 	command.Flags().StringVar(&resourceGroupName, "resource-group-name", "", "The name of the resource group your network belongs to.")
 

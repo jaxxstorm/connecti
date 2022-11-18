@@ -2,6 +2,7 @@ package aws
 
 import (
 	"fmt"
+	"strings"
 
 	awstailscale "github.com/lbrlabs/pulumi-tailscale-bastion/sdk/go/bastion/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/ec2"
@@ -15,6 +16,9 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 		var vpcId string
 		var route string
 		var subnets pulumi.StringArray
+
+		routes := args.Routes
+
 		for _, subnetId := range args.SubnetIds {
 			subnet, err := ec2.LookupSubnet(ctx, &ec2.LookupSubnetArgs{
 				Id: pulumi.StringRef(subnetId),
@@ -30,17 +34,14 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 			if vpcId != subnet.VpcId {
 				return fmt.Errorf("all subnets must be in the same VPC")
 			}
-
-			if route == "" {
-				route = subnet.CidrBlock
+			// check if we're supplying our own routes via the CLI
+			if len(routes) == 0 {
+				routes = append(routes, subnet.CidrBlock)
 			}
-
-			if route != subnet.CidrBlock {
-				return fmt.Errorf("cidr blocks of different subnets must be identical")
-			}
-
 			subnets = append(subnets, pulumi.String(subnetId))
 		}
+
+		route = strings.Join(routes, ",")
 
 		bastion, err := awstailscale.NewBastion(ctx, args.Name, &awstailscale.BastionArgs{
 			VpcId:     pulumi.String(vpcId),
