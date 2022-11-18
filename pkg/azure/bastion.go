@@ -32,18 +32,17 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 			return fmt.Errorf("error looking up subnet: %v", err)
 		}
 
+		routes := args.Routes
+
 		// check if we're supplying our own routes via the CLI
-		if len(args.Routes) == 0 {
+		if len(routes) == 0 {
 			// if not, try and calculate the routes from the subnet
-			var subnetRoutes []string
-			subnetRoutes = append(subnetRoutes, subnet.AddressPrefix)
+			routes = append(routes, subnet.AddressPrefix)
 			if len(subnet.AddressPrefixes) > 0 {
-				subnetRoutes = append(subnetRoutes, subnet.AddressPrefixes...)
+				routes = append(routes, subnet.AddressPrefixes...)
 			}
-			route = strings.Join(subnetRoutes, ",")
-		} else {
-			route = strings.Join(args.Routes, ",")
 		}
+		route = strings.Join(routes, ",")
 
 		// Azure has very strict naming requirements for scale sets
 		name := stringy.New(args.Name).CamelCase()

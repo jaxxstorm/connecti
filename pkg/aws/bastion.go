@@ -15,8 +15,9 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 		// create an array of subnets to pass to the bastion
 		var vpcId string
 		var route string
-		var routes []string
 		var subnets pulumi.StringArray
+
+		routes := args.Routes
 
 		for _, subnetId := range args.SubnetIds {
 			subnet, err := ec2.LookupSubnet(ctx, &ec2.LookupSubnetArgs{
@@ -34,15 +35,13 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 				return fmt.Errorf("all subnets must be in the same VPC")
 			}
 			// check if we're supplying our own routes via the CLI
-			if len(args.Routes) == 0 {
+			if len(routes) == 0 {
 				routes = append(routes, subnet.CidrBlock)
-				route = strings.Join(routes, ",")
-			} else {
-				route = strings.Join(args.Routes, ",")
 			}
-
 			subnets = append(subnets, pulumi.String(subnetId))
 		}
+
+		route = strings.Join(routes, ",")
 
 		bastion, err := awstailscale.NewBastion(ctx, args.Name, &awstailscale.BastionArgs{
 			VpcId:     pulumi.String(vpcId),
