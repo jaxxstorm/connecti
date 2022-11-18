@@ -15,6 +15,7 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 		// create an array of subnets to pass to the bastion
 		var vpcId string
 		var route string
+		var routes []string
 		var subnets pulumi.StringArray
 
 		for _, subnetId := range args.SubnetIds {
@@ -32,14 +33,10 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 			if vpcId != subnet.VpcId {
 				return fmt.Errorf("all subnets must be in the same VPC")
 			}
+			// check if we're supplying our own routes via the CLI
 			if len(args.Routes) == 0 {
-				if route == "" {
-					route = subnet.CidrBlock
-				}
-
-				if route != subnet.CidrBlock {
-					return fmt.Errorf("cidr blocks of different subnets must be identical")
-				}
+				routes = append(routes, subnet.CidrBlock)
+				route = strings.Join(routes, ",")
 			} else {
 				route = strings.Join(args.Routes, ",")
 			}
