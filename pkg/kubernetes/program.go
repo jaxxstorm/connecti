@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/auto"
+	"github.com/jaxxstorm/connecti/pkg/bastion"
 )
 
 func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, error) {
@@ -24,7 +25,7 @@ func Program(name string, ctx context.Context, args BastionArgs) (auto.Stack, er
 		return s, fmt.Errorf("error installing Kubernetes resource plugin: %v", err)
 	}
 
-	err = w.InstallPluginFromServer(ctx, "tailscale-bastion", "v0.0.11", "github://api.github.com/lbrlabs")
+	err = w.InstallPluginFromServer(ctx, bastion.Name, bastion.Version, bastion.Server)
 	if err != nil {
 		return s, fmt.Errorf("error installing tailscale plugin: %v", err)
 	}
