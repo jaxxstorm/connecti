@@ -36,7 +36,7 @@ You can do this via environment variables or the configuration file.
 Once you've set up your environment, you need to provision your bastion. You can do this by specifying the subnets you want to connect to. `connecti` takes a list of subnets, these subnets all need to be within the same VPC
 
 ```
-connecti connect aws --subnet-ids subnet-0b5bef562bf7308b8 --route "172.20.0.0/22"
+connecti connect aws --subnet-ids subnet-0b5bef562bf7308b8 --routes "172.20.0.0/22"
 ```
 
 ## Disconnecting
