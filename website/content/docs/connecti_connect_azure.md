@@ -22,7 +22,7 @@ connecti connect azure [flags]
       --location string               The Azure Location to use.
       --name string                   Unique name to use for your bastion.
       --resource-group-name string    The name of the resource group your network belongs to.
-      --route string                  The route you wish to advertise.
+      --routes string                  The route you wish to advertise.
       --subnet-name string            The subnet name to use in the virtual network.
       --tailnet string                The name of the tailnet to connect to. See: https://login.tailscale.com/admin/settings/general
       --virtual-network-name string   The virtual network to which your chosen subnet belongs.
