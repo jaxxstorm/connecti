@@ -88,7 +88,7 @@ Before using `connecti` - you'll need to make sure you have valid cloud provider
 
 You'll need then to sign up to [Tailscale](https://tailscale.com/kb/1017/install/) and create a "Tailnet". Information on how to do this will depend on your operating system. Tailscale offers a generous free tier for individuals.
 
-Once you've created your Tailnet, you'll need to make a note of the name from [here](https://login.tailscale.com/admin/settings/general).
+Once you've created your Tailnet, you'll need to make a note of the name from [here]([https://login.tailscale.com/admin/settings/general](https://login.tailscale.com/admin/dns).
 
 Finally, you'll also need a Tailscale API key, to allow you to create resources in Tailscale. You can provision an API key from [here](https://login.tailscale.com/admin/settings/keys)
 
