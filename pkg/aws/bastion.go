@@ -47,6 +47,9 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 			VpcId:     pulumi.String(vpcId),
 			SubnetIds: subnets,
 			Route:     pulumi.String(route),
+			TailscaleTags: pulumi.StringArray{
+				pulumi.String("tag:bastion"),
+			},
 			Region:    pulumi.String(args.Region),
 		})
 		if err != nil {

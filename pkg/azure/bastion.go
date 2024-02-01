@@ -52,6 +52,9 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 			Route:             pulumi.String(route), // FIXME: can we get the route from the returned vnet?
 			SubnetId:          pulumi.String(subnet.Id),
 			ResourceGroupName: pulumi.String(args.ResourceGroupName),
+			TailscaleTags: pulumi.StringArray{
+				pulumi.String("tag:bastion"),
+			},
 		})
 
 		// FIXME: we need to think about how we'd expose this to user

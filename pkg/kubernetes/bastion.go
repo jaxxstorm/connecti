@@ -19,6 +19,9 @@ func Bastion(args BastionArgs) pulumi.RunFunc {
 		bastion, err := k8stailscale.NewBastion(ctx, args.Name, &k8stailscale.BastionArgs{
 			Routes:          pulumi.StringArray(routes),
 			CreateNamespace: args.CreateNamespace,
+			TailscaleTags: pulumi.StringArray{
+				pulumi.String("tag:bastion"),
+			},
 		})
 		if err != nil {
 			return fmt.Errorf("error creating bastion: %v", err)
