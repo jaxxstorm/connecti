@@ -31,7 +31,7 @@ You can do this via environment variables, command line flags, or the configurat
 Once you've set up your environment, you need to provision your bastion. You'll need to specify the routes you wish to propagate
 
 ```
-connecti connect azure --subnet-name tailscale --virtual-network-name tailscale722bd552 --route 172.16.0.0/22 --resource-group-name tailscale243d4895
+connecti connect azure --subnet-name tailscale --virtual-network-name tailscale722bd552 --routes 172.16.0.0/22 --resource-group-name tailscale243d4895
 ```
 
 ## Disconnecting
